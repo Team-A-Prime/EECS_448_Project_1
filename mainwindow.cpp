@@ -7,13 +7,12 @@
 QVector<QString> dates;
 
 MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent), ui(new Ui::MainWindow), currentToggleNew(false), currentToggleView(false),
-      currentToggleAdd(false) {
+    : QMainWindow(parent), ui(new Ui::MainWindow), currentToggleNew(false), currentToggleAdd(false),
+      currentToggleView(false) {
   ui->setupUi(this);
   ReadWrite::read(eventList);
   float timeCounter = 0;
   for (int i = 0; i < 48; i++) {
-    QCheckBox *box = new QCheckBox;
     QCheckBox *box2 = new QCheckBox;
     QString sTime = QString::number((int)timeCounter);
     sTime += (QString::number(timeCounter).contains(".5")) ? ":30" : ":00";
@@ -25,10 +24,8 @@ MainWindow::MainWindow(QWidget *parent)
     if (!time.time().isValid()) {
       QMessageBox::information(this, "This: ", sTime);
     }
-    box->setText(time.time().toString());
     box2->setText(time.time().toString());
     timeCounter += 0.5;
-    ui->gridLayout_17->addWidget(box);
     ui->gridLayout_18->addWidget(box2);
   }
 }
@@ -53,11 +50,25 @@ void MainWindow::on_btnNewDateBack_clicked() {
 }
 
 void MainWindow::on_btnNewDateNext_clicked() {
-  dates.append(ui->calendarWidget->selectedDate().toString());
+  for (auto date : dates) {
+    for (int i = 0; i < 48; i++) {
+      QCheckBox *box = new QCheckBox;
+      QString sTime = QString::number(i/2);
+      sTime += (i % 2) ? ":30" : ":00";
+      if (i < 20) sTime.prepend("0");
+      QDateTime time;
+      time.setTime(QDateTime::fromString(sTime, "hh:mm").time());
+      box->setText(date + " - " + time.time().toString());
+      ui->gridLayout_17->addWidget(box);
+    }
+  }
   ui->stackedWidget->setCurrentWidget(ui->pageNewTime);
 }
 void MainWindow::on_btnNewDateAdd_clicked() {
-  dates.append(ui->calendarWidget->selectedDate().toString());
+  if (!dates.contains(ui->calendarWidget->selectedDate().toString())) {
+    dates.append(ui->calendarWidget->selectedDate().toString());
+  }
+  ui->btnNewDateNext->setEnabled(ui->txtName->text() != "");
 }
 void MainWindow::on_btnNewTimeBack_clicked() {
   ui->stackedWidget->setCurrentWidget(ui->pageNewDate);
@@ -225,8 +236,7 @@ void MainWindow::on_btnListAttendanceNext_clicked() {
     ui->tableWidget->setItem(0, 0, labelA);
     ui->tableWidget->setItem(0, 1, labelT);
 
-    // Set Row Count for the amount of attendees, and read everything into the
-    // table.
+    // Set Row Count for the amount of attendees, and read everything into the table.
     ui->tableWidget->setRowCount(currentEventE.getAttendees().count() + 1);
     ui->tableWidget->setCurrentCell(1, 0);
     foreach (Attendee a, currentEventE.getAttendees()) {
@@ -323,11 +333,7 @@ void MainWindow::on_rdView_clicked() {
 }
 
 void MainWindow::on_eventName_textChanged(/*const QString &arg1*/) {
-  if (ui->txtName->text() == "") {
-    ui->btnNewDateNext->setEnabled(false);
-  } else {
-    ui->btnNewDateNext->setEnabled(true);
-  }
+  ui->btnNewDateNext->setEnabled(ui->txtName->text() != "" && dates.length() > 0);
 }
 
 void MainWindow::on_lstListEvents_itemClicked(QListWidgetItem *item) {
@@ -341,7 +347,6 @@ void MainWindow::on_btnViewAttendanceToggle_clicked() {
       QTableWidgetItem *item = ui->tableWidget->item(i, 1);
       QList<QString> itemS = item->text().split(",");
       QString newTime;
-      float timeCounter = 0;
       foreach (QString time, itemS) {
         if (time.contains("&")) {
           if (time.indexOf("&") == 3) {
