@@ -19,7 +19,13 @@ void ReadWrite::write(const Event& event) {
       QTextStream writeStream(&file);
       writeStream<< "[event] " + event.getName() +"\n";
       writeStream<< "[creator] " + event.getCreator() + "\n";
-      writeStream<< "[date] " + event.getDate() + "\n";
+      writeStream<< "[date] ";
+      foreach(QString date, event.getDates())
+      {
+          writeStream<<date + ",";
+      }
+      writeStream << "\n";
+
       writeStream<< "[timeSlots] ";
       foreach(QString time, event.getSlots())
       {
@@ -48,18 +54,15 @@ void ReadWrite::read(QVector<Event>& eventList) {
   QString lines = "test";
   QString eventName;
   QString creatorName;
-  QString date;
+  QString dateText;
+  QVector<QString> dates;
   QString times;
   QVector<QString> timeSlots;
 
   QString att_name;
   QString att_times;
 
-  if(file.open(QIODevice::ReadOnly))
-  {
-
-
-
+  if(file.open(QIODevice::ReadOnly)) {
       QTextStream readStream(&file);
       while (!readStream.atEnd())
       {
@@ -70,14 +73,17 @@ void ReadWrite::read(QVector<Event>& eventList) {
               lines = readStream.readLine();
               creatorName = lines.right(lines.size()-10);
               lines = readStream.readLine();
-              date = lines.right(lines.size()-7);
+              dateText = lines.right(lines.size()-7);
+              foreach (QString date, dateText.split(",")) {
+                 dates.append(date);
+              }
               lines = readStream.readLine();
               times = lines.right(lines.size()-12);
               foreach (QString time, times.split(",")) {
                  timeSlots.append(time);
               }
               timeSlots.removeLast();
-              Event newEvent(eventName, creatorName, date, timeSlots);
+              Event newEvent(eventName, dates, creatorName, timeSlots);
               timeSlots.clear();
               lines = readStream.readLine();
               while (lines.startsWith("[attendee] "))

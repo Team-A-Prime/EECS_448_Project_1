@@ -64,6 +64,15 @@ private slots:
      */
     void on_btnNewDateNext_clicked();
 
+    /*!
+     * \brief on_btnNewDateAdd_clicked
+     *
+     * Pre: None
+     *
+     * Post: The currently selected date will be internally recorded.
+     */
+    void on_btnNewDateAdd_clicked();
+
 
     /*!
      * \brief on_btnNewTimeBack_clicked
