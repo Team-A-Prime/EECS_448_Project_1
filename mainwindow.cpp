@@ -7,8 +7,8 @@
 QVector<QString> dates;
 
 MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent), ui(new Ui::MainWindow), currentToggleNew(false),
-      currentToggleView(false), currentToggleAdd(false) {
+    : QMainWindow(parent), ui(new Ui::MainWindow), currentToggleNew(false), currentToggleView(false),
+      currentToggleAdd(false) {
   ui->setupUi(this);
   ReadWrite::read(eventList);
   float timeCounter = 0;
@@ -80,8 +80,7 @@ void MainWindow::on_btnNewTimeSave_clicked() {
         }
       } else if (time.contains("PM")) {
         if (time.left(2) != QString::number(12)) {
-          time = QString::number(time.left(2).toInt() + 12) +
-                 time.left(8).remove(0, 2);
+          time = QString::number(time.left(2).toInt() + 12) + time.left(8).remove(0, 2);
         } else {
           time = time.left(8);
         }
@@ -271,8 +270,7 @@ void MainWindow::on_btnAddAttendanceSave_clicked() {
         }
       } else if (time.contains("PM")) {
         if (time.left(2) != QString::number(12)) {
-          time = QString::number(time.left(2).toInt() + 12) +
-                 time.left(8).remove(0, 2);
+          time = QString::number(time.left(2).toInt() + 12) + time.left(8).remove(0, 2);
         } else {
           time = time.left(8);
         }
@@ -370,8 +368,7 @@ void MainWindow::on_btnViewAttendanceToggle_clicked() {
             }
           } else if (time.contains("PM")) {
             if (time.left(2) != QString::number(12)) {
-              time = QString::number(time.left(2).toInt() + 12) +
-                     time.left(8).remove(0, 2);
+              time = QString::number(time.left(2).toInt() + 12) + time.left(8).remove(0, 2);
             } else {
               time = time.left(8);
             }

@@ -27,8 +27,7 @@ public:
    *
    * Post: An event is created with multiple parts initialized.
    */
-  Event(const QString &name, const QVector<QString> &dates,
-        const QString &creator, const QVector<QString> &timeSlots);
+  Event(const QString &name, const QVector<QString> &dates, const QString &creator, const QVector<QString> &timeSlots);
 
   /*!
    * \brief Event - Deconstructor
@@ -131,10 +130,9 @@ public:
   QVector<QString> getAttendeeNames() const;
 
 private:
-  QString name; /*!< The name of the event.*/
-  QVector<QString>
-      dates;       /*!< the dates that the event is going to take place at.*/
-  QString creator; /*!< The name of the creator.*/
+  QString name;                /*!< The name of the event.*/
+  QVector<QString> dates;      /*!< the dates that the event is going to take place at.*/
+  QString creator;             /*!< The name of the creator.*/
   QVector<QString> timeSlots;  /*!< The times the event will be taking place at.
                                   Multiple times in stagnated bunches might be
                                   used,  so a vector is used. */

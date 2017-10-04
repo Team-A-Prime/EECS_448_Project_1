@@ -46,9 +46,8 @@ public:
   QVector<QString> getSlots() const;
 
 private:
-  QString name; /*!< Name of the attendee */
-  QVector<QString>
-      timeSlots; /*!< The times they are attending the associated event. */
+  QString name;               /*!< Name of the attendee */
+  QVector<QString> timeSlots; /*!< The times they are attending the associated event. */
 };
 
 #endif // ATTENDEE_H
