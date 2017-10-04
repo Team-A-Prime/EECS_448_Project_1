@@ -1,14 +1,14 @@
 #ifndef EVENT_H
 #define EVENT_H
 #include "attendee.h"
-#include <QVector>
 #include <QString>
+#include <QVector>
 
 using namespace std;
 
 class Event {
 public:
-    /*!
+  /*!
    * \brief Event - Constructor
    *\details
    * Pre: None
@@ -27,15 +27,16 @@ public:
    *
    * Post: An event is created with multiple parts initialized.
    */
-  Event(const QString& name, const QVector<QString>& dates, const QString& creator, const QVector<QString>& timeSlots);
+  Event(const QString &name, const QVector<QString> &dates,
+        const QString &creator, const QVector<QString> &timeSlots);
 
   /*!
-  * \brief Event - Deconstructor
-  *
-  * Pre: An event is to be deleted.
-  *
-  * Post: None
-  */
+   * \brief Event - Deconstructor
+   *
+   * Pre: An event is to be deleted.
+   *
+   * Post: None
+   */
   ~Event();
   /*!
    * \brief getName
@@ -95,7 +96,7 @@ public:
    *
    * Post: a time slot is added to the event.
    */
-  void addSlot(const QString& slot);
+  void addSlot(const QString &slot);
 
   /*!
    * \brief removeSlot
@@ -105,7 +106,7 @@ public:
    *
    * Post: A time slot is removed from the event.
    */
-  void removeSlot(const QString& slot);
+  void removeSlot(const QString &slot);
 
   /*!
    * \brief addAttendee
@@ -115,7 +116,7 @@ public:
    *
    * Post: An attendee is added.
    */
-  void addAttendee(const Attendee& attendee);
+  void addAttendee(const Attendee &attendee);
 
   /*!
    * \brief getAttendeeNames
@@ -128,12 +129,15 @@ public:
    * Note: names is a local variable declared inside of the function.
    */
   QVector<QString> getAttendeeNames() const;
+
 private:
   QString name; /*!< The name of the event.*/
-  QVector<QString> dates; /*!< the dates that the event is going to take place at.*/
+  QVector<QString>
+      dates;       /*!< the dates that the event is going to take place at.*/
   QString creator; /*!< The name of the creator.*/
-  QVector<QString> timeSlots; /*!< The times the event will be taking place at. Multiple times in stagnated bunches might be used,
-                                   so a vector is used. */
+  QVector<QString> timeSlots;  /*!< The times the event will be taking place at.
+                                  Multiple times in stagnated bunches might be
+                                  used,  so a vector is used. */
   QVector<Attendee> attendees; /*!< The list of the attendees to an event.*/
 };
 
