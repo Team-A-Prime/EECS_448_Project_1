@@ -142,24 +142,14 @@ void MainWindow::on_btnNewTimeToggle_clicked()
       thatBox->setText(time.time().toString("hh:mm:ss AP"));
     } else {
       QString timeCounterS = QString::number(timeCounter);
-      if (timeCounterS.contains(".5")) {
-        QString sTime = QString::number((int)timeCounter) + ":30";
-        if (timeCounter < 3) {
-          sTime.prepend("0");
-        }
-        QDateTime time;
-        time.setTime(QDateTime::fromString(sTime, "hh:mm").time());
-
-        thatBox->setText(time.time().toString());
-      } else {
-        QString sTime = QString::number((int)timeCounter) + ":00";
-        if (timeCounter < 3) {
-          sTime.prepend("0");
-        }
-        QDateTime time;
-        time.setTime(QDateTime::fromString(sTime, "hh:mm").time());
-        thatBox->setText(time.time().toString());
+      QString sTime = QString::number((int)timeCounter);
+      sTime += (timeCounterS.contains(".5")) ? ":30" : "00";
+      if (timeCounter < 3) {
+        sTime.prepend("0");
       }
+      QDateTime time;
+      time.setTime(QDateTime::fromString(sTime, "hh:mm").time());
+      thatBox->setText(time.time().toString());
       timeCounter += 0.5;
     }
   }
