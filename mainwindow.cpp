@@ -153,10 +153,7 @@ void MainWindow::on_btnNewTimeToggle_clicked()
       timeCounter += 0.5;
     }
   }
-  if (currentToggleNew)
-    currentToggleNew = false;
-  else
-    currentToggleNew = true;
+  currentToggleNew = !currentToggleNew;
 }
 
 void MainWindow::on_btnExit_clicked()
@@ -426,10 +423,7 @@ void MainWindow::on_btnViewAttendanceToggle_clicked()
       QTableWidgetItem *newTim = new QTableWidgetItem(newTime);
       ui->tableWidget->setItem(i, 1, newTim);
     }
-    if (currentToggleView)
-      currentToggleView = false;
-    else
-      currentToggleView = true;
+    currentToggleView = !currentToggleView;
   }
 }
 
@@ -483,8 +477,5 @@ void MainWindow::on_btnAddAttendanceToggle_clicked()
       timeCounter += 0.5;
     }
   }
-  if (currentToggleAdd)
-    currentToggleAdd = false;
-  else
-    currentToggleAdd = true;
+  currentToggleAdd = !currentToggleAdd;
 }
