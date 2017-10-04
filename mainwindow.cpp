@@ -19,31 +19,18 @@ MainWindow::MainWindow(QWidget *parent) :
   for (int i = 0; i < 48; i++) {
     QCheckBox *box = new QCheckBox;
     QCheckBox *box2 = new QCheckBox;
-    if (QString::number(timeCounter).contains(".5")) {
-      QString sTime = QString::number((int)timeCounter) + ":30";
-      if (timeCounter < 3) {
-        sTime.prepend("0");
-      }
-      QDateTime time;
-      time.setTime(QDateTime::fromString(sTime, "hh:mm").time());
-      if (!time.time().isValid()) {
-        QMessageBox::information(this, "This: ", sTime);
-      }
-      box->setText(time.time().toString());
-      box2->setText(time.time().toString());
-    } else {
-      QString sTime = QString::number((int)timeCounter) + ":00";
-      if (timeCounter < 3) {
-        sTime.prepend("0");
-      }
-      QDateTime time;
-      time.setTime(QDateTime::fromString(sTime, "hh:mm").time());
-      if (!time.time().isValid()) {
-        QMessageBox::information(this, "This: ", sTime);
-      }
-      box->setText(time.time().toString());
-      box2->setText(time.time().toString());
+    QString sTime = QString::number((int)timeCounter);
+    sTime += (QString::number(timeCounter).contains(".5")) ? ":30" : ":00";
+    if (timeCounter < 3) {
+      sTime.prepend("0");
     }
+    QDateTime time;
+    time.setTime(QDateTime::fromString(sTime, "hh:mm").time());
+    if (!time.time().isValid()) {
+      QMessageBox::information(this, "This: ", sTime);
+    }
+    box->setText(time.time().toString());
+    box2->setText(time.time().toString());
     timeCounter += 0.5;
     ui->gridLayout_17->addWidget(box);
     ui->gridLayout_18->addWidget(box2);
