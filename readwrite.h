@@ -1,12 +1,12 @@
 #ifndef READWRITE_H
 #define READWRITE_H
 
-#include <QString>
 #include "event.h"
+#include <QString>
 
 class ReadWrite {
 public:
-    /*!
+  /*!
    * \brief ReadWrite
    *
    * Pre: None
@@ -22,7 +22,7 @@ public:
    *
    * Post: An Event is written to a file.
    */
-  static void write(const Event& event);
+  static void write(const Event &event);
 
   /*!
    * \brief read
@@ -32,7 +32,8 @@ public:
    *
    * Post: A file is read. For this specific purpose, it is used to read events.
    */
-   static void read(QVector<Event>& eventList);
+  static void read(QVector<Event> &eventList);
+
 private:
 };
 
