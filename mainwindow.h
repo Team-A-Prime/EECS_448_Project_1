@@ -93,6 +93,15 @@ private slots:
   void on_btnNewTimeSave_clicked();
 
   /*!
+   * \brief on_btnNewTimeAddTasks_clicked
+   *
+   * Pre: None
+   *
+   * Post: The user will go to the task adding page.
+   */
+  void on_btnNewTimeAddTasks_clicked();
+
+  /*!
    * \brief on_btnNewTimeToggle_clicked
    *
    * Pre: None
