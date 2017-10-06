@@ -77,6 +77,10 @@ void MainWindow::on_btnNewTimeSave_clicked() {
   ui->stackedWidget->setCurrentWidget(ui->pageReturn);
 }
 
+void MainWindow::on_btnNewTimeAddTasks_clicked() {
+  ui->stackedWidget->setCurrentWidget(ui->pageNewTasks);
+}
+
 void MainWindow::on_btnNewTimeToggle_clicked() {
   QWidget *list = ui->scrollArea->widget();
   QObjectList newList = list->children();
