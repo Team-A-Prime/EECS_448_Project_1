@@ -11,23 +11,6 @@ MainWindow::MainWindow(QWidget *parent)
       currentToggleView(false) {
   ui->setupUi(this);
   ReadWrite::read(eventList);
-  float timeCounter = 0;
-  for (int i = 0; i < 48; i++) {
-    QCheckBox *box2 = new QCheckBox;
-    QString sTime = QString::number((int)timeCounter);
-    sTime += (QString::number(timeCounter).contains(".5")) ? ":30" : ":00";
-    if (timeCounter < 3) {
-      sTime.prepend("0");
-    }
-    QDateTime time;
-    time.setTime(QDateTime::fromString(sTime, "hh:mm").time());
-    if (!time.time().isValid()) {
-      QMessageBox::information(this, "This: ", sTime);
-    }
-    box2->setText(time.time().toString());
-    timeCounter += 0.5;
-    ui->gridLayout_18->addWidget(box2);
-  }
 }
 
 MainWindow::~MainWindow() {
@@ -66,7 +49,7 @@ void MainWindow::on_btnNewDateNext_clicked() {
 }
 void MainWindow::on_btnNewDateAdd_clicked() {
   if (!dates.contains(ui->calendarWidget->selectedDate().toString())) {
-    dates.append(ui->calendarWidget->selectedDate().toString());
+    dates.append(ui->calendarWidget->selectedDate().toString("MM/dd/yyyy"));
   }
   ui->btnNewDateNext->setEnabled(ui->txtName->text() != "");
 }
@@ -164,51 +147,20 @@ void MainWindow::on_btnListAttendanceBack_clicked() {
 
 void MainWindow::on_btnListAttendanceNext_clicked() {
   if (ui->rdAdd->isChecked()) {
-    QWidget *list = ui->scrollArea_2->widget();
-    QObjectList newList = list->children();
-    newList.removeFirst();
-    foreach (QObject *obj, newList) {
-      QCheckBox *thatBox = qobject_cast<QCheckBox *>(obj);
-      thatBox->setEnabled(false);
-    }
-
+    // Figure out which event to use because they're stored in a vector instead of a map (why)
     Event currentEventE;
-    foreach (Event e, eventList) {
+    for (auto e : eventList) {
       if (e.getName() == currentEvent) {
         currentEventE = e;
         break;
       }
     }
+
     QVector<QString> times = currentEventE.getSlots();
-    foreach (QString time, times) {
-      foreach (QObject *obj, newList) {
-        QCheckBox *thatBox = qobject_cast<QCheckBox *>(obj);
-        // Weird Behavior occurs here again.
-        QString textToCompare = thatBox->text();
-        if (thatBox->text().contains("&")) {
-          if (thatBox->text().indexOf("&") == 3) {
-            textToCompare.replace("&", "");
-          }
-          if (thatBox->text().indexOf("&") == 1) {
-            textToCompare.replace("&", "");
-          }
-          if (thatBox->text().indexOf("&") == 0) {
-            textToCompare.replace("&", "");
-          }
-        }
-        if (!currentToggleAdd) {
-          if (time == textToCompare) {
-            thatBox->setEnabled(true);
-          }
-        } else {
-          QDateTime Dtime;
-          Dtime.setTime(QTime::fromString(time));
-          time = (Dtime.time().toString("hh:mm:ss AP"));
-          if (time == textToCompare) {
-            thatBox->setEnabled(true);
-          }
-        }
-      }
+    for (auto time : times) {
+      QCheckBox *box = new QCheckBox;
+      box->setText(time);
+      ui->gridLayout_18->addWidget(box);
     }
 
     ui->stackedWidget->setCurrentWidget(ui->pageAddAttendance);
