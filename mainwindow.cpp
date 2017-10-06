@@ -41,7 +41,7 @@ void MainWindow::on_btnNewDateNext_clicked() {
       if (i < 20) sTime.prepend("0");
       QDateTime time;
       time.setTime(QDateTime::fromString(sTime, "hh:mm").time());
-      box->setText(date + " - " + time.time().toString());
+      box->setText(date + " - " + time.time().toString("hh:mm"));
       ui->gridLayout_17->addWidget(box);
     }
   }
@@ -94,40 +94,15 @@ void MainWindow::on_btnNewTimeToggle_clicked() {
   QWidget *list = ui->scrollArea->widget();
   QObjectList newList = list->children();
   newList.removeFirst();
-  float timeCounter = 0;
   foreach (QObject *box, newList) {
     QCheckBox *thatBox = qobject_cast<QCheckBox *>(box);
+    QString textToConvert = thatBox->text();
     if (!currentToggleNew) {
-      QString textToConvert = thatBox->text();
-      /*Extremely odd behavior where I imagine float to String converstion
-       * produces odd & character. These were the locations that they appeared
-       * in the string, so they are fixed accordingly.
-       */
-      if (textToConvert.contains("&")) {
-        if (textToConvert.indexOf("&") == 3) {
-          textToConvert.replace("&", "");
-        }
-        if (textToConvert.indexOf("&") == 1) {
-          textToConvert.replace("&", "");
-        }
-        if (textToConvert.indexOf("&") == 0) {
-          textToConvert.replace("&", "");
-        }
-      }
-      QDateTime time;
-      time.setTime(QTime::fromString(textToConvert));
-      thatBox->setText(time.time().toString("hh:mm:ss AP"));
+      QDateTime time = QDateTime::fromString(textToConvert, "MM/dd/yyyy - hh:mm");
+      thatBox->setText(time.toString("MM/dd/yyyy - hh:mm AP"));
     } else {
-      QString timeCounterS = QString::number(timeCounter);
-      QString sTime = QString::number((int)timeCounter);
-      sTime += (timeCounterS.contains(".5")) ? ":30" : "00";
-      if (timeCounter < 3) {
-        sTime.prepend("0");
-      }
-      QDateTime time;
-      time.setTime(QDateTime::fromString(sTime, "hh:mm").time());
-      thatBox->setText(time.time().toString());
-      timeCounter += 0.5;
+      QDateTime time = QDateTime::fromString(textToConvert, "MM/dd/yyyy - hh:mm AP");
+      thatBox->setText(time.toString("MM/dd/yyyy - hh:mm"));
     }
   }
   currentToggleNew = !currentToggleNew;
