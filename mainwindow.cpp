@@ -51,7 +51,7 @@ void MainWindow::on_btnNewDateAdd_clicked() {
   if (!dates.contains(ui->calendarWidget->selectedDate().toString())) {
     dates.append(ui->calendarWidget->selectedDate().toString("MM/dd/yyyy"));
   }
-  ui->btnNewDateNext->setEnabled(ui->txtName->text() != "");
+  ui->btnNewDateNext->setEnabled(ui->eventName->text() != "");
 }
 void MainWindow::on_btnNewTimeBack_clicked() {
   ui->stackedWidget->setCurrentWidget(ui->pageNewDate);
@@ -66,19 +66,6 @@ void MainWindow::on_btnNewTimeSave_clicked() {
     QCheckBox *thatBox = qobject_cast<QCheckBox *>(box);
     if (thatBox->isChecked()) {
       QString time = thatBox->text();
-      if (time.contains("AM")) {
-        if (time.startsWith("12")) {
-          time = "00" + time.left(8).remove(0, 2);
-        } else {
-          time = time.left(8);
-        }
-      } else if (time.contains("PM")) {
-        if (time.left(2) != QString::number(12)) {
-          time = QString::number(time.left(2).toInt() + 12) + time.left(8).remove(0, 2);
-        } else {
-          time = time.left(8);
-        }
-      }
       timeSlots.append(time);
     }
   }
@@ -199,19 +186,6 @@ void MainWindow::on_btnAddAttendanceSave_clicked() {
     QCheckBox *thatBox = qobject_cast<QCheckBox *>(box);
     if (thatBox->isChecked()) {
       QString time = thatBox->text();
-      if (time.contains("AM")) {
-        if (time.startsWith("12")) {
-          time = "00" + time.left(8).remove(0, 2);
-        } else {
-          time = time.left(8);
-        }
-      } else if (time.contains("PM")) {
-        if (time.left(2) != QString::number(12)) {
-          time = QString::number(time.left(2).toInt() + 12) + time.left(8).remove(0, 2);
-        } else {
-          time = time.left(8);
-        }
-      }
       timeSlots.append(time);
     }
   }
@@ -260,7 +234,7 @@ void MainWindow::on_rdView_clicked() {
 }
 
 void MainWindow::on_eventName_textChanged(/*const QString &arg1*/) {
-  ui->btnNewDateNext->setEnabled(ui->txtName->text() != "" && dates.length() > 0);
+  ui->btnNewDateNext->setEnabled(ui->eventName->text() != "" && dates.length() > 0);
 }
 
 void MainWindow::on_lstListEvents_itemClicked(QListWidgetItem *item) {
