@@ -1,5 +1,4 @@
-#ifndef ATTENDEE_H
-#define ATTENDEE_H
+#pragma once
 
 #include <QObject>
 #include <QVector>
@@ -49,5 +48,3 @@ private:
   QString name;               /*!< Name of the attendee */
   QVector<QString> timeSlots; /*!< The times they are attending the associated event. */
 };
-
-#endif // ATTENDEE_H

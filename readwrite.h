@@ -1,5 +1,4 @@
-#ifndef READWRITE_H
-#define READWRITE_H
+#pragma once
 
 #include "event.h"
 #include <QString>
@@ -36,5 +35,3 @@ public:
 
 private:
 };
-
-#endif
