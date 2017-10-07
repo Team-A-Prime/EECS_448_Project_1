@@ -112,6 +112,34 @@ private slots:
   void on_btnNewTimeToggle_clicked();
 
   /*!
+   * \brief on_txtTask_textChanged
+   *
+   * Pre: None
+   *
+   * Post: So long as the line is not empty, the add button will become
+   * enabled.
+   */
+  void on_txtTask_textChanged();
+
+  /*!
+   * \brief on_btnNewTaskAdd_clicked
+   *
+   * Pre: None
+   *
+   * Post: The task in txtTask will be added
+   */
+  void on_btnNewTaskAdd_clicked();
+
+  /*!
+   * \brief on_btnNewTaskDone_clicked
+   *
+   * Pre: None
+   *
+   * Post: The event will be constructed and finalized
+   */
+  void on_btnNewTaskDone_clicked();
+
+  /*!
    * \brief on_btnExit_clicked
    *
    * Pre: None
@@ -195,17 +223,15 @@ private slots:
 
   /*!
    * \brief on_txtName_textChanged
-   * \param arg1 - An unnecessary argument, but kept just in case for potential
-   * needs for evaluation.
    *
    * Pre: None
    *
    * Post: So long as the line edit is not empty, the buttons will become
    * enabled.
    */
-  void on_txtName_textChanged(/*const QString &arg1*/);
+  void on_txtName_textChanged();
 
-  void on_eventName_textChanged(/*const QString &arg1*/);
+  void on_eventName_textChanged();
 
   /*!
    * \brief on_rdAdd_clicked

@@ -4,8 +4,8 @@ Event::Event() {
 }
 
 Event::Event(const QString &name, const QVector<QString> &dates, const QString &creator,
-             const QVector<QString> &timeSlots)
-    : name(name), dates(dates), creator(creator), timeSlots(timeSlots) {
+             const QVector<QString> &timeSlots, const QVector<QString> &tasks)
+    : name(name), dates(dates), creator(creator), timeSlots(timeSlots), tasks(tasks) {
 }
 
 Event::~Event() {
@@ -25,6 +25,10 @@ QString Event::getCreator() const {
 
 QVector<QString> Event::getSlots() const {
   return timeSlots;
+}
+
+QVector<QString> Event::getTasks() const {
+  return tasks;
 }
 
 QVector<Attendee> Event::getAttendees() const {
