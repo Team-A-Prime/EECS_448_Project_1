@@ -17,12 +17,13 @@ public:
    * \brief Attendee
    * \param name
    * \param timeSlots
+   * \param tasks
    *
    * Pre: None
    *
    * Post: An Attendee is created with variables initialized.
    */
-  Attendee(const QString &name, const QVector<QString> &timeSlots);
+  Attendee(const QString &name, const QVector<QString> &timeSlots, const QVector<QString> &tasks);
 
   /*!
    * \brief getName
@@ -44,7 +45,18 @@ public:
    */
   QVector<QString> getSlots() const;
 
+  /*!
+   * \brief getTasks
+   * \return  QVector<QString> taskss
+   *
+   * Pre: None
+   *
+   * Post: None
+   */
+  QVector<QString> getTasks() const;
+
 private:
   QString name;               /*!< Name of the attendee */
   QVector<QString> timeSlots; /*!< The times they are attending the associated event. */
+  QVector<QString> tasks;     /*!< The event tasks they are responsible for. */
 };
