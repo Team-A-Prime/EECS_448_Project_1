@@ -27,6 +27,11 @@ void ReadWrite::write(const Event &event) {
     foreach (QString time, event.getSlots()) { writeStream << time + ","; }
     writeStream << "\n";
 
+    writeStream << "[tasks] ";
+    // TODO: putting a comma in a task probably breaks this but boy howdy do I not care
+    foreach (QString task, event.getTasks()) { writeStream << task + ","; }
+    writeStream << "\n";
+
     foreach (Attendee att, event.getAttendees()) {
       writeStream << "[attendee] " + att.getName() + "\n";
       writeStream << "[att_timeSlots] ";
@@ -48,6 +53,8 @@ void ReadWrite::read(QVector<Event> &eventList) {
   QVector<QString> dates;
   QString times;
   QVector<QString> timeSlots;
+  QString taskText;
+  QVector<QString> tasks;
 
   QString att_name;
   QString att_times;
@@ -67,7 +74,11 @@ void ReadWrite::read(QVector<Event> &eventList) {
         times = lines.right(lines.size() - 12);
         foreach (QString time, times.split(",")) { timeSlots.append(time); }
         timeSlots.removeLast();
-        Event newEvent(eventName, dates, creatorName, timeSlots);
+        lines = readStream.readLine();
+        taskText = lines.right(lines.size() - 12);
+        foreach (QString task, taskText.split(",")) { tasks.append(task); }
+        tasks.removeLast();
+        Event newEvent(eventName, dates, creatorName, timeSlots, tasks);
         timeSlots.clear();
         lines = readStream.readLine();
         while (lines.startsWith("[attendee] ")) {

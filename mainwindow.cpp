@@ -59,6 +59,7 @@ void MainWindow::on_btnNewTimeBack_clicked() {
 
 void MainWindow::on_btnNewTimeSave_clicked() {
   QVector<QString> timeSlots;
+  QVector<QString> tasks;
   QWidget *list = ui->scrollArea->widget();
   QObjectList newList = list->children();
   newList.removeFirst(); // Removes the Grid from the list.
@@ -69,7 +70,7 @@ void MainWindow::on_btnNewTimeSave_clicked() {
       timeSlots.append(time);
     }
   }
-  Event event(ui->eventName->text(), dates, ui->txtName->text(), timeSlots);
+  Event event(ui->eventName->text(), dates, ui->txtName->text(), timeSlots, tasks);
   Attendee creator(ui->txtName->text(), timeSlots);
   event.addAttendee(creator);
   eventList.append(event);
@@ -79,6 +80,7 @@ void MainWindow::on_btnNewTimeSave_clicked() {
 
 void MainWindow::on_btnNewTimeAddTasks_clicked() {
   ui->stackedWidget->setCurrentWidget(ui->pageNewTasks);
+  ui->gridLayout_20->setAlignment(Qt::AlignTop);
 }
 
 void MainWindow::on_btnNewTimeToggle_clicked() {
@@ -97,6 +99,45 @@ void MainWindow::on_btnNewTimeToggle_clicked() {
     }
   }
   currentToggleNew = !currentToggleNew;
+}
+
+void MainWindow::on_txtTask_textChanged() {
+  ui->btnNewTaskAdd->setEnabled(ui->txtTask->text() != "");
+}
+
+void MainWindow::on_btnNewTaskAdd_clicked() {
+  QLabel *label = new QLabel;
+  label->setText(ui->txtTask->text());
+  ui->gridLayout_20->addWidget(label);
+  ui->txtTask->setText("");
+}
+
+void MainWindow::on_btnNewTaskDone_clicked() {
+  QVector<QString> timeSlots;
+  QVector<QString> tasks;
+  QWidget *list = ui->scrollArea->widget();
+  QObjectList newList = list->children();
+  newList.removeFirst(); // Removes the Grid from the list.
+  foreach (QObject *box, newList) {
+    QCheckBox *thatBox = qobject_cast<QCheckBox *>(box);
+    if (thatBox->isChecked()) {
+      QString time = thatBox->text();
+      timeSlots.append(time);
+    }
+  }
+  QWidget *list2 = ui->scrollArea_3->widget();
+  QObjectList newList2 = list2->children();
+  newList2.removeFirst(); // Removes the Grid from the list.
+  foreach (QObject *label, newList2) {
+    QLabel *thatLabel = qobject_cast<QLabel *>(label);
+    tasks.append(thatLabel->text());
+  }
+  Event event(ui->eventName->text(), dates, ui->txtName->text(), timeSlots, tasks);
+  Attendee creator(ui->txtName->text(), timeSlots);
+  event.addAttendee(creator);
+  eventList.append(event);
+
+  ui->stackedWidget->setCurrentWidget(ui->pageReturn);
 }
 
 void MainWindow::on_btnExit_clicked() {
