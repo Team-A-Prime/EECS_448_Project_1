@@ -1,5 +1,5 @@
-#ifndef EVENT_H
-#define EVENT_H
+#pragma once
+
 #include "attendee.h"
 #include <QString>
 #include <QVector>
@@ -149,5 +149,3 @@ private:
   QVector<QString> tasks;  /*!< The list of tasks to be signed up for */
   QVector<Attendee> attendees; /*!< The list of the attendees to an event.*/
 };
-
-#endif

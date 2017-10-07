@@ -1,5 +1,4 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#pragma once
 
 #include "event.h"
 #include <QCheckBox>
@@ -296,5 +295,3 @@ private:
 
   bool currentToggleView; /*!< Toggle flag in TableWidget */
 };
-
-#endif // MAINWINDOW_H
