@@ -60,6 +60,7 @@ void MainWindow::on_btnNewTimeBack_clicked() {
 void MainWindow::on_btnNewTimeSave_clicked() {
   QVector<QString> timeSlots;
   QVector<QString> tasks;
+  QVector<QString> creatorTasks;
   QWidget *list = ui->scrollArea->widget();
   QObjectList newList = list->children();
   newList.removeFirst(); // Removes the Grid from the list.
@@ -71,7 +72,7 @@ void MainWindow::on_btnNewTimeSave_clicked() {
     }
   }
   Event event(ui->eventName->text(), dates, ui->txtName->text(), timeSlots, tasks);
-  Attendee creator(ui->txtName->text(), timeSlots);
+  Attendee creator(ui->txtName->text(), timeSlots, creatorTasks);
   event.addAttendee(creator);
   eventList.append(event);
 
@@ -115,6 +116,7 @@ void MainWindow::on_btnNewTaskAdd_clicked() {
 void MainWindow::on_btnNewTaskDone_clicked() {
   QVector<QString> timeSlots;
   QVector<QString> tasks;
+  QVector<QString> creatorTasks;
   QWidget *list = ui->scrollArea->widget();
   QObjectList newList = list->children();
   newList.removeFirst(); // Removes the Grid from the list.
@@ -133,7 +135,7 @@ void MainWindow::on_btnNewTaskDone_clicked() {
     tasks.append(thatLabel->text());
   }
   Event event(ui->eventName->text(), dates, ui->txtName->text(), timeSlots, tasks);
-  Attendee creator(ui->txtName->text(), timeSlots);
+  Attendee creator(ui->txtName->text(), timeSlots, creatorTasks);
   event.addAttendee(creator);
   eventList.append(event);
 
@@ -169,6 +171,27 @@ void MainWindow::on_btnListAttendanceNext_clicked() {
       box->setText(time);
       ui->gridLayout_18->addWidget(box);
     }
+
+    QVector<Attendee> attendees = currentEventE.getAttendees();
+    QVector<QString> tasksTaken;
+    for (auto attendee : attendees) {
+      for (auto task : attendee.getTasks()) {
+        tasksTaken.append(task);
+      }
+    }
+
+    QVector<QString> tasks = currentEventE.getTasks();
+    for (auto task : tasks) {
+      QCheckBox *box = new QCheckBox;
+      box->setText(task);
+      ui->gridLayout_21->addWidget(box);
+      if (tasksTaken.contains(task)) {
+        box->setEnabled(false);
+      }
+    }
+
+    ui->gridLayout_18->setAlignment(Qt::AlignTop);
+    ui->gridLayout_21->setAlignment(Qt::AlignTop);
 
     ui->stackedWidget->setCurrentWidget(ui->pageAddAttendance);
   } else if (ui->rdView->isChecked()) {
@@ -224,6 +247,7 @@ void MainWindow::on_btnAddAttendanceBack_clicked() {
 
 void MainWindow::on_btnAddAttendanceSave_clicked() {
   QVector<QString> timeSlots;
+  QVector<QString> tasks;
   QWidget *list = ui->scrollArea_2->widget();
   QObjectList newList = list->children();
   newList.removeFirst(); // Removes the Grid from the list.
@@ -234,7 +258,17 @@ void MainWindow::on_btnAddAttendanceSave_clicked() {
       timeSlots.append(time);
     }
   }
-  Attendee attendee(ui->txtName->text(), timeSlots);
+  QWidget *list2 = ui->scrollArea_4->widget();
+  QObjectList newList2 = list2->children();
+  newList2.removeFirst(); // Removes the Grid from the list.
+  foreach (QObject *box, newList2) {
+    QCheckBox *thatBox = qobject_cast<QCheckBox *>(box);
+    if (thatBox->isChecked()) {
+      QString task = thatBox->text();
+      tasks.append(task);
+    }
+  }
+  Attendee attendee(ui->txtName->text(), timeSlots, tasks);
   Event CurrentEventE;
   foreach (Event e, eventList) {
     if (e.getName().trimmed() == currentEvent.trimmed()) {
