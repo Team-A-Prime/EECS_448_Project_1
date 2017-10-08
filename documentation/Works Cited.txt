@@ -1,3 +1,3 @@
-The writing of this program was made possible by the Qt Group Plc. Libraries have been provided to run the program assuming your linux system is a fairly bleeding edge one such as Arch Linux
-To download the full source, a link can be found to their download page here: https://www1.qt.io/download-open-source/?hsCtaTracking=f977210e-de67-475f-a32b-65cec207fd03%7Cd62710cd-e1db-46aa-8d4d-2f1c1ffdacea
+The writing of this program was made possible by the Qt Group Plc.
+To download the full source, a link can be found to their download page here: https://www1.qt.io/download-open-source/
 Date of Access: September 6th, 2017, and September 16th, 2017.
