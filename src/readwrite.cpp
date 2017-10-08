@@ -24,8 +24,8 @@ void ReadWrite::write(const Event &event) {
     writeStream << "\n";
 
     writeStream << "[tasks] ";
-    // TODO: putting a comma in a task probably breaks this but boy howdy do I not care
-    foreach (QString task, event.getTasks()) { writeStream << task + ","; }
+    // TODO: putting a <$++*#^&$##$_!^^!#_?=+&+&=!@&*?=_^+=*@&> in a task probably breaks this but boy howdy do I not care
+    foreach (QString task, event.getTasks()) { writeStream << task + "<$++*#^&$##$_!^^!#_?=+&+&=!@&*?=_^+=*@&>"; }
     writeStream << "\n";
 
     foreach (Attendee att, event.getAttendees()) {
@@ -34,7 +34,7 @@ void ReadWrite::write(const Event &event) {
       foreach (QString time, att.getSlots()) { writeStream << time + ","; }
       writeStream << "\n";
       writeStream << "[att_tasks] ";
-      foreach (QString task, att.getTasks()) { writeStream << task + ","; }
+      foreach (QString task, att.getTasks()) { writeStream << task + "<$++*#^&$##$_!^^!#_?=+&+&=!@&*?=_^+=*@&>"; }
       writeStream << "\n";
     }
 
@@ -77,7 +77,7 @@ void ReadWrite::read(QVector<Event> &eventList) {
         timeSlots.removeLast();
         lines = readStream.readLine();
         taskText = lines.right(lines.size() - 8);
-        foreach (QString task, taskText.split(",")) { tasks.append(task); }
+        foreach (QString task, taskText.split("<$++*#^&$##$_!^^!#_?=+&+&=!@&*?=_^+=*@&>")) { tasks.append(task); }
         tasks.removeLast();
         Event newEvent(eventName, dates, creatorName, timeSlots, tasks);
         dates.clear();
@@ -92,7 +92,7 @@ void ReadWrite::read(QVector<Event> &eventList) {
           timeSlots.removeLast();
           lines = readStream.readLine();
           att_tasks = lines.right(lines.size() - 12);
-          foreach (QString task, att_tasks.split(",")) { tasks.append(task); }
+          foreach (QString task, att_tasks.split("<$++*#^&$##$_!^^!#_?=+&+&=!@&*?=_^+=*@&>")) { tasks.append(task); }
           tasks.removeLast();
           Attendee att(att_name, timeSlots, tasks);
           newEvent.addAttendee(att);
