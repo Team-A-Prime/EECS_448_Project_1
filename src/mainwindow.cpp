@@ -70,7 +70,7 @@ void MainWindow::on_btnNewTimeSave_clicked() {
     if (box->isChecked()) {
       QString time = box->text();
       if (currentToggleNew) {
-        time = QDateTime::fromString(time, "MM/dd/yyyy - hh:mm AP").toString("MM/dd/yyyy - hh:mm");
+        time = QDateTime::fromString(time, "MM/dd/yyyy - h:mm AP").toString("MM/dd/yyyy - hh:mm");
       }
       timeSlots.append(time);
     }
@@ -95,9 +95,9 @@ void MainWindow::on_btnNewTimeToggle_clicked() {
   foreach (QObject *box, newList) {
     QCheckBox *thatBox = qobject_cast<QCheckBox *>(box);
     if (!currentToggleNew) {
-      thatBox->setText(QDateTime::fromString(thatBox->text(), "MM/dd/yyyy - hh:mm").toString("MM/dd/yyyy - hh:mm AP"));
+      thatBox->setText(QDateTime::fromString(thatBox->text(), "MM/dd/yyyy - hh:mm").toString("MM/dd/yyyy - h:mm AP"));
     } else {
-      thatBox->setText(QDateTime::fromString(thatBox->text(), "MM/dd/yyyy - hh:mm AP").toString("MM/dd/yyyy - hh:mm"));
+      thatBox->setText(QDateTime::fromString(thatBox->text(), "MM/dd/yyyy - h:mm AP").toString("MM/dd/yyyy - hh:mm"));
     }
   }
   currentToggleNew = !currentToggleNew;
@@ -293,7 +293,7 @@ void MainWindow::on_btnAddAttendanceSave_clicked() {
     if (box->isChecked()) {
       QString time = box->text();
       if (currentToggleAdd) {
-        time = QDateTime::fromString(time, "MM/dd/yyyy - hh:mm AP").toString("MM/dd/yyyy - hh:mm");
+        time = QDateTime::fromString(time, "MM/dd/yyyy - h:mm AP").toString("MM/dd/yyyy - hh:mm");
       }
       timeSlots.append(time);
     }
@@ -360,9 +360,9 @@ void MainWindow::on_btnViewAttendanceToggle_clicked() {
     QTableWidgetItem *item = ui->tableTimeSlots->item(0, i);
     QString time = item->text();
     if (!currentToggleView) {
-      item->setText(QDateTime::fromString(time, "MM/dd/yyyy\nhh:mm").toString("MM/dd/yyyy\nhh:mm AP"));
+      item->setText(QDateTime::fromString(time, "MM/dd/yyyy\nhh:mm").toString("MM/dd/yyyy\nh:mm AP"));
     } else {
-      item->setText(QDateTime::fromString(time, "MM/dd/yyyy\nhh:mm AP").toString("MM/dd/yyyy\nhh:mm"));
+      item->setText(QDateTime::fromString(time, "MM/dd/yyyy\nh:mm AP").toString("MM/dd/yyyy\nhh:mm"));
     }
   }
   currentToggleView = !currentToggleView;
@@ -374,9 +374,9 @@ void MainWindow::on_btnAddAttendanceToggle_clicked() {
   for (auto box : list) {
     QCheckBox *item = qobject_cast<QCheckBox *>(box);
     if (!currentToggleAdd) {
-      item->setText(QDateTime::fromString(item->text(), "MM/dd/yyyy - hh:mm").toString("MM/dd/yyyy - hh:mm AP"));
+      item->setText(QDateTime::fromString(item->text(), "MM/dd/yyyy - hh:mm").toString("MM/dd/yyyy - h:mm AP"));
     } else {
-      item->setText(QDateTime::fromString(item->text(), "MM/dd/yyyy - hh:mm AP").toString("MM/dd/yyyy - hh:mm"));
+      item->setText(QDateTime::fromString(item->text(), "MM/dd/yyyy - h:mm AP").toString("MM/dd/yyyy - hh:mm"));
     }
   }
   currentToggleAdd = !currentToggleAdd;
