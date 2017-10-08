@@ -210,14 +210,14 @@ void MainWindow::on_btnListAttendanceNext_clicked() {
       }
     }
 
-    // Initialize header
+    // Initialize the time slots table
     ui->tableTimeSlots->insertRow(0);
     ui->tableTimeSlots->insertColumn(0);
     ui->tableTimeSlots->insertColumn(1);
-    QTableWidgetItem *labelA = new QTableWidgetItem("Attendees");
-    QTableWidgetItem *labelT = new QTableWidgetItem("Times");
-    ui->tableTimeSlots->setItem(0, 0, labelA);
-    ui->tableTimeSlots->setItem(0, 1, labelT);
+    QTableWidgetItem *labelASlots = new QTableWidgetItem("Attendees");
+    QTableWidgetItem *labelTSlots = new QTableWidgetItem("Times");
+    ui->tableTimeSlots->setItem(0, 0, labelASlots);
+    ui->tableTimeSlots->setItem(0, 1, labelTSlots);
 
     // Set Row Count for the amount of attendees, and read everything into the table.
     ui->tableTimeSlots->setRowCount(currentEventE.getAttendees().count() + 1);
@@ -237,6 +237,16 @@ void MainWindow::on_btnListAttendanceNext_clicked() {
       ui->tableTimeSlots->setItem(ui->tableTimeSlots->currentRow(), 1, newTim);
       ui->tableTimeSlots->setCurrentCell(ui->tableTimeSlots->currentRow() + 1, 0);
     }
+
+    // Initialize the task table
+    ui->tableTasks->insertRow(0);
+    ui->tableTasks->insertColumn(0);
+    ui->tableTasks->insertColumn(1);
+    QTableWidgetItem *labelATasks = new QTableWidgetItem("Task name");
+    QTableWidgetItem *labelTTasks = new QTableWidgetItem("Task assignee");
+    ui->tableTasks->setItem(0, 0, labelATasks);
+    ui->tableTasks->setItem(0, 1, labelTTasks);
+
 
     ui->stackedWidget->setCurrentWidget(ui->pageViewAttendance);
   }
