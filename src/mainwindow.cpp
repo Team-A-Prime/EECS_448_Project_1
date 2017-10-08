@@ -12,6 +12,7 @@ MainWindow::MainWindow(QWidget *parent)
       currentToggleView(false) {
   ui->setupUi(this);
   ReadWrite::read(eventList);
+  ui->calendarWidget->setMinimumDate(QDate::currentDate());
 }
 
 MainWindow::~MainWindow() {
@@ -49,7 +50,7 @@ void MainWindow::on_btnNewDateNext_clicked() {
   ui->stackedWidget->setCurrentWidget(ui->pageNewTime);
 }
 void MainWindow::on_btnNewDateAdd_clicked() {
-  if (!dates.contains(ui->calendarWidget->selectedDate().toString())) {
+  if (!dates.contains(ui->calendarWidget->selectedDate().toString("MM/dd/yyyy"))) {
     dates.append(ui->calendarWidget->selectedDate().toString("MM/dd/yyyy"));
   }
   ui->btnNewDateNext->setEnabled(ui->eventName->text() != "");
@@ -210,32 +211,29 @@ void MainWindow::on_btnListAttendanceNext_clicked() {
       }
     }
 
-    // Initialize the time slots table
+    // Initialize the time slot table
     ui->tableTimeSlots->insertRow(0);
     ui->tableTimeSlots->insertColumn(0);
-    ui->tableTimeSlots->insertColumn(1);
-    QTableWidgetItem *labelASlots = new QTableWidgetItem("Attendees");
-    QTableWidgetItem *labelTSlots = new QTableWidgetItem("Times");
-    ui->tableTimeSlots->setItem(0, 0, labelASlots);
-    ui->tableTimeSlots->setItem(0, 1, labelTSlots);
 
-    // Set Row Count for the amount of attendees, and read everything into the table.
-    ui->tableTimeSlots->setRowCount(currentEventE.getAttendees().count() + 1);
-    ui->tableTimeSlots->setCurrentCell(1, 0);
-    foreach (Attendee a, currentEventE.getAttendees()) {
-      QString allSlots;
-      QTableWidgetItem *newAtt = new QTableWidgetItem(a.getName());
-      for (QString time : a.getSlots()) {
-        if (a.getSlots().indexOf(time) != a.getSlots().count() - 1) {
-          allSlots.append(time + ",");
-        } else {
-          allSlots.append(time);
-        }
+    // Populate the time slot column heads
+    for (int i = 0; i < currentEventE.getSlots().size(); i++) {
+      ui->tableTimeSlots->insertColumn(i+1);
+      QTableWidgetItem *labelASlots = new QTableWidgetItem(currentEventE.getSlots()[i].replace(" - ", "\n"));
+      ui->tableTimeSlots->setItem(0, i+1, labelASlots);
+    }
+
+    // Populate the attendee rows
+    auto attendees = currentEventE.getAttendees();
+    for (int i = 0; i < attendees.size(); i++) {
+      ui->tableTimeSlots->insertRow(i+1);
+      QTableWidgetItem *labelAName = new QTableWidgetItem(attendees[i].getName());
+      ui->tableTimeSlots->setItem(i+1, 0, labelAName);
+      auto eslots = currentEventE.getSlots();
+      for (int j = 0; j < eslots.size(); j++) {
+        QTableWidgetItem *labelASlots = new QTableWidgetItem();
+        labelASlots->setBackground((attendees[i].getSlots().contains(eslots[j])) ? Qt::green : Qt::red);
+        ui->tableTimeSlots->setItem(i+1, j+1, labelASlots);
       }
-      QTableWidgetItem *newTim = new QTableWidgetItem(allSlots);
-      ui->tableTimeSlots->setItem(ui->tableTimeSlots->currentRow(), 0, newAtt);
-      ui->tableTimeSlots->setItem(ui->tableTimeSlots->currentRow(), 1, newTim);
-      ui->tableTimeSlots->setCurrentCell(ui->tableTimeSlots->currentRow() + 1, 0);
     }
 
     // Initialize the task table
@@ -253,6 +251,16 @@ void MainWindow::on_btnListAttendanceNext_clicked() {
     foreach (QString task, currentEventE.getTasks()) {
       QTableWidgetItem *newTask = new QTableWidgetItem(task);
       ui->tableTasks->setItem(ui->tableTasks->currentRow(), 0, newTask);
+      QString taskAssignee = "";
+      for (auto attendee : currentEventE.getAttendees()) {
+        if (attendee.getTasks().contains(task)) {
+          taskAssignee = attendee.getName();
+          break;
+        }
+      }
+      QTableWidgetItem *newTaskAssign = new QTableWidgetItem(taskAssignee);
+      ui->tableTasks->setItem(ui->tableTasks->currentRow(), 1, newTaskAssign);
+
       ui->tableTasks->setCurrentCell(ui->tableTasks->currentRow() + 1, 0);
     }
 
