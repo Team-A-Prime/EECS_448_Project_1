@@ -7,8 +7,8 @@ enum EXIT_CODES {
 
 QVector<QString> dates;
 
-MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent), ui(new Ui::MainWindow), currentToggleNew(false), currentToggleAdd(false), currentToggleView(false) {
+MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow), currentToggleNew(false),
+                                          currentToggleAdd(false), currentToggleView(false) {
   ui->setupUi(this);
   ReadWrite::read(eventList);
 }
@@ -66,10 +66,8 @@ void MainWindow::on_btnNewTimeSave_clicked() {
   QVector<QString> timeSlots;
   QVector<QString> tasks;
   QVector<QString> creatorTasks;
-  QObjectList list = ui->scrollArea->widget()->children();
-  list.removeFirst(); // Removes the Grid from the list.
-  for (auto item : list) {
-    QCheckBox *box = qobject_cast<QCheckBox *>(item);
+  auto boxes = ui->scrollArea->widget()->findChildren<QCheckBox *>();
+  for (auto box : boxes) {
     if (box->isChecked()) {
       QString time = box->text();
       if (currentToggleNew) {
@@ -92,10 +90,8 @@ void MainWindow::on_btnNewTimeAddTasks_clicked() {
 }
 
 void MainWindow::on_btnNewTimeToggle_clicked() {
-  QObjectList list = ui->scrollArea->widget()->children();
-  list.removeFirst();
-  for (auto item : list) {
-    QCheckBox *box = qobject_cast<QCheckBox *>(item);
+  auto boxes = ui->scrollArea->widget()->findChildren<QCheckBox *>();
+  for (auto box : boxes) {
     if (!currentToggleNew) {
       box->setText(QDateTime::fromString(box->text(), "MM/dd/yyyy - hh:mm").toString("MM/dd/yyyy - h:mm AP"));
     } else {
@@ -120,10 +116,8 @@ void MainWindow::on_btnNewTaskDone_clicked() {
   QVector<QString> timeSlots;
   QVector<QString> tasks;
   QVector<QString> creatorTasks;
-  QObjectList slotList = ui->scrollArea->widget()->children();
-  slotList.removeFirst(); // Removes the Grid from the list.
-  for (auto item : slotList) {
-    QCheckBox *box = qobject_cast<QCheckBox *>(item);
+  auto boxes = ui->scrollArea->widget()->findChildren<QCheckBox *>();
+  for (auto box : boxes) {
     if (box->isChecked()) {
       QString time = box->text();
       if (currentToggleNew) {
@@ -132,10 +126,8 @@ void MainWindow::on_btnNewTaskDone_clicked() {
       timeSlots.append(time);
     }
   }
-  QObjectList taskList = ui->scrollArea_3->widget()->children();
-  taskList.removeFirst(); // Removes the Grid from the list.
-  for (auto item : taskList) {
-    QLabel *label = qobject_cast<QLabel *>(item);
+  auto labels = ui->scrollArea_3->widget()->findChildren<QLabel *>();
+  for (auto label : labels) {
     tasks.append(label->text());
   }
   Event event(ui->eventName->text(), dates, ui->txtName->text(), timeSlots, tasks);
@@ -288,10 +280,8 @@ void MainWindow::on_btnAddAttendanceBack_clicked() {
 void MainWindow::on_btnAddAttendanceSave_clicked() {
   QVector<QString> timeSlots;
   QVector<QString> tasks;
-  QObjectList list = ui->scrollArea_2->widget()->children();
-  list.removeFirst(); // Removes the Grid from the list.
-  for (auto item : list) {
-    QCheckBox *box = qobject_cast<QCheckBox *>(item);
+  auto timeBoxes = ui->scrollArea_2->widget()->findChildren<QCheckBox *>();
+  for (auto box : timeBoxes) {
     if (box->isChecked()) {
       QString time = box->text();
       if (currentToggleAdd) {
@@ -300,10 +290,8 @@ void MainWindow::on_btnAddAttendanceSave_clicked() {
       timeSlots.append(time);
     }
   }
-  QObjectList list2 = ui->scrollArea_4->widget()->children();
-  list2.removeFirst(); // Removes the Grid from the list.
-  for (auto item : list2) {
-    QCheckBox *box = qobject_cast<QCheckBox *>(item);
+  auto taskBoxes = ui->scrollArea_4->widget()->findChildren<QCheckBox *>();
+  for (auto box : taskBoxes) {
     if (box->isChecked()) {
       tasks.append(box->text());
     }
@@ -371,14 +359,12 @@ void MainWindow::on_btnViewAttendanceToggle_clicked() {
 }
 
 void MainWindow::on_btnAddAttendanceToggle_clicked() {
-  QObjectList list = ui->scrollArea_2->widget()->children();
-  list.removeFirst();
-  for (auto box : list) {
-    QCheckBox *item = qobject_cast<QCheckBox *>(box);
+  auto boxes = ui->scrollArea_2->widget()->findChildren<QCheckBox *>();
+  for (auto box : boxes) {
     if (!currentToggleAdd) {
-      item->setText(QDateTime::fromString(item->text(), "MM/dd/yyyy - hh:mm").toString("MM/dd/yyyy - h:mm AP"));
+      box->setText(QDateTime::fromString(box->text(), "MM/dd/yyyy - hh:mm").toString("MM/dd/yyyy - h:mm AP"));
     } else {
-      item->setText(QDateTime::fromString(item->text(), "MM/dd/yyyy - h:mm AP").toString("MM/dd/yyyy - hh:mm"));
+      box->setText(QDateTime::fromString(box->text(), "MM/dd/yyyy - h:mm AP").toString("MM/dd/yyyy - hh:mm"));
     }
   }
   currentToggleAdd = !currentToggleAdd;
