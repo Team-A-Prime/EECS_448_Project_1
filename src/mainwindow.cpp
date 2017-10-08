@@ -14,7 +14,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 }
 
 MainWindow::~MainWindow() {
-  foreach (Event e, eventList) { ReadWrite::write(e); }
+  for (auto event : eventList) {
+    ReadWrite::write(event);
+  }
   delete ui;
 }
 
@@ -25,8 +27,8 @@ void MainWindow::on_btnNew_clicked() {
 
 void MainWindow::on_btnSelecExist_clicked() {
   ui->lstListEvents->clear();
-  for (auto e : eventList) {
-    ui->lstListEvents->addItem(e.getName());
+  for (auto event : eventList) {
+    ui->lstListEvents->addItem(event.getName());
   }
   ui->stackedWidget->setCurrentWidget(ui->pageListAttendance);
 }
@@ -79,7 +81,7 @@ void MainWindow::on_btnNewTimeSave_clicked() {
   Event event(ui->eventName->text(), dates, ui->txtName->text(), timeSlots, tasks);
   Attendee creator(ui->txtName->text(), timeSlots, creatorTasks);
   event.addAttendee(creator);
-  eventList.append(event);
+  eventList.insert(ui->eventName->text(), event);
 
   ui->stackedWidget->setCurrentWidget(ui->pageReturn);
 }
@@ -133,7 +135,7 @@ void MainWindow::on_btnNewTaskDone_clicked() {
   Event event(ui->eventName->text(), dates, ui->txtName->text(), timeSlots, tasks);
   Attendee creator(ui->txtName->text(), timeSlots, creatorTasks);
   event.addAttendee(creator);
-  eventList.append(event);
+  eventList.insert(ui->eventName->text(), event);
 
   ui->stackedWidget->setCurrentWidget(ui->pageReturn);
 }
@@ -152,23 +154,16 @@ void MainWindow::on_btnListAttendanceBack_clicked() {
 
 void MainWindow::on_btnListAttendanceNext_clicked() {
   if (ui->rdAdd->isChecked()) {
-    // Figure out which event to use because they're stored in a vector instead of a map (why)
-    Event currentEventE;
-    for (auto e : eventList) {
-      if (e.getName() == currentEvent) {
-        currentEventE = e;
-        break;
-      }
-    }
+    Event currentEvent = eventList.value(currentEventName);
 
-    QVector<QString> times = currentEventE.getSlots();
+    QVector<QString> times = currentEvent.getSlots();
     for (auto time : times) {
       QCheckBox *box = new QCheckBox;
       box->setText(time);
       ui->gridLayout_18->addWidget(box);
     }
 
-    QVector<Attendee> attendees = currentEventE.getAttendees();
+    QVector<Attendee> attendees = currentEvent.getAttendees();
     QVector<QString> tasksTaken;
     for (auto attendee : attendees) {
       for (auto task : attendee.getTasks()) {
@@ -176,7 +171,7 @@ void MainWindow::on_btnListAttendanceNext_clicked() {
       }
     }
 
-    QVector<QString> tasks = currentEventE.getTasks();
+    QVector<QString> tasks = currentEvent.getTasks();
     for (auto task : tasks) {
       QCheckBox *box = new QCheckBox;
       box->setText(task);
@@ -197,21 +192,15 @@ void MainWindow::on_btnListAttendanceNext_clicked() {
     ui->tableTimeSlots->setColumnCount(0);
 
     // Finds event to be viewed from current event.
-    Event currentEventE;
-    foreach (Event e, eventList) {
-      if (e.getName() == currentEvent) {
-        currentEventE = e;
-        break;
-      }
-    }
+    Event currentEvent = eventList.value(currentEventName);
 
     // Initialize the time slot table
     ui->tableTimeSlots->insertRow(0);
     ui->tableTimeSlots->insertColumn(0);
 
     // Populate the time slot column heads
-    auto timeSlots = currentEventE.getSlots();
-    auto timeSlotsDisp = currentEventE.getSlots();
+    auto timeSlots = currentEvent.getSlots();
+    auto timeSlotsDisp = currentEvent.getSlots();
     for (int i = 0; i < timeSlots.size(); i++) {
       ui->tableTimeSlots->insertColumn(i+1);
       auto labelASlots = new QTableWidgetItem(timeSlotsDisp[i].replace(" - ", "\n"));
@@ -219,7 +208,7 @@ void MainWindow::on_btnListAttendanceNext_clicked() {
     }
 
     // Populate the attendee rows
-    auto attendees = currentEventE.getAttendees();
+    auto attendees = currentEvent.getAttendees();
     for (int i = 0; i < attendees.size(); i++) {
       ui->tableTimeSlots->insertRow(i+1);
       auto attNameLabel = new QTableWidgetItem(attendees[i].getName());
@@ -251,13 +240,13 @@ void MainWindow::on_btnListAttendanceNext_clicked() {
     ui->tableTasks->setItem(0, 1, new QTableWidgetItem("Task assignee"));
 
     // Set Row Count for the amount of tasks, and read everything into the table.
-    ui->tableTasks->setRowCount(currentEventE.getTasks().count() + 1);
+    ui->tableTasks->setRowCount(currentEvent.getTasks().count() + 1);
     ui->tableTasks->setCurrentCell(1, 0);
-    for (auto task : currentEventE.getTasks()) {
+    for (auto task : currentEvent.getTasks()) {
       auto newTask = new QTableWidgetItem(task);
       ui->tableTasks->setItem(ui->tableTasks->currentRow(), 0, newTask);
       QString taskAssignee = "";
-      for (auto attendee : currentEventE.getAttendees()) {
+      for (auto attendee : currentEvent.getAttendees()) {
         if (attendee.getTasks().contains(task)) {
           taskAssignee = attendee.getName();
           break;
@@ -297,16 +286,9 @@ void MainWindow::on_btnAddAttendanceSave_clicked() {
     }
   }
   Attendee attendee(ui->txtName->text(), timeSlots, tasks);
-  Event CurrentEventE;
-  for (auto e : eventList) {
-    if (e.getName().trimmed() == currentEvent.trimmed()) {
-      CurrentEventE = e;
-      break;
-    }
-  }
-  CurrentEventE.addAttendee(attendee);
-  eventList.removeLast();
-  eventList.append(CurrentEventE);
+  Event currentEvent = eventList.value(currentEventName);
+  currentEvent.addAttendee(attendee);
+  eventList.insert(currentEventName, currentEvent);
   ui->stackedWidget->setCurrentWidget(ui->pageReturn);
 }
 
@@ -341,7 +323,7 @@ void MainWindow::on_eventName_textChanged() {
 }
 
 void MainWindow::on_lstListEvents_itemClicked(QListWidgetItem *item) {
-  currentEvent = item->text();
+  currentEventName = item->text();
   ui->btnListAttendanceNext->setEnabled(true);
 }
 

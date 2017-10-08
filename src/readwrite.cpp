@@ -43,7 +43,7 @@ void ReadWrite::write(const Event &event) {
   file.close();
 }
 
-void ReadWrite::read(QVector<Event> &eventList) {
+void ReadWrite::read(QMap<QString, Event> &eventList) {
   QFile file("eventlist.txt");
   QString lines = "test";
   QString eventName;
@@ -101,7 +101,7 @@ void ReadWrite::read(QVector<Event> &eventList) {
           tasks.clear();
         }
 
-        eventList.append(newEvent);
+        eventList.insert(eventName, newEvent);
       }
     }
     file.remove();

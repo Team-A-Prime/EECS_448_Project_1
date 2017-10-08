@@ -292,13 +292,13 @@ private slots:
   void on_btnAddAttendanceToggle_clicked();
 
 private:
-  QVector<Event> eventList; /*!< The list of all events */
+  QMap<QString, Event> eventList; /*!< The map of all events */
   Ui::MainWindow *ui;    /*!< The "Main Window" object where all of the widgets reside.*/
   bool currentToggleNew; /*!< Keeps track of whether or not the toggle button on
                             the pageNewTime is currently in the UTC or the AM/PM
                             format. False represents 24 hour, and true
                             represents 12 hour format. */
-  QString currentEvent;  /*!< Looks at event in lstListEvents to see which is the
+  QString currentEventName;  /*!< Looks at event in lstListEvents to see which is the
                             current Event. */
 
   bool currentToggleAdd; /*!< Toggle flag in Add Attendance. */

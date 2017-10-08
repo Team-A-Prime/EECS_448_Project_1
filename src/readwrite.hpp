@@ -34,7 +34,7 @@ public:
    *
    * Post: A file is read. For this specific purpose, it is used to read events.
    */
-  static void read(QVector<Event> &eventList);
+  static void read(QMap<QString, Event> &eventList);
 
 private:
 };
