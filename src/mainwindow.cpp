@@ -63,13 +63,15 @@ void MainWindow::on_btnNewTimeSave_clicked() {
   QVector<QString> timeSlots;
   QVector<QString> tasks;
   QVector<QString> creatorTasks;
-  QWidget *list = ui->scrollArea->widget();
-  QObjectList newList = list->children();
-  newList.removeFirst(); // Removes the Grid from the list.
-  foreach (QObject *box, newList) {
-    QCheckBox *thatBox = qobject_cast<QCheckBox *>(box);
-    if (thatBox->isChecked()) {
-      QString time = thatBox->text();
+  QObjectList list = ui->scrollArea->widget()->children();
+  list.removeFirst(); // Removes the Grid from the list.
+  for (auto item : list) {
+    QCheckBox *box = qobject_cast<QCheckBox *>(item);
+    if (box->isChecked()) {
+      QString time = box->text();
+      if (currentToggleNew) {
+        time = QDateTime::fromString(time, "MM/dd/yyyy - hh:mm AP").toString("MM/dd/yyyy - hh:mm");
+      }
       timeSlots.append(time);
     }
   }
@@ -92,13 +94,10 @@ void MainWindow::on_btnNewTimeToggle_clicked() {
   newList.removeFirst();
   foreach (QObject *box, newList) {
     QCheckBox *thatBox = qobject_cast<QCheckBox *>(box);
-    QString textToConvert = thatBox->text();
     if (!currentToggleNew) {
-      QDateTime time = QDateTime::fromString(textToConvert, "MM/dd/yyyy - hh:mm");
-      thatBox->setText(time.toString("MM/dd/yyyy - hh:mm AP"));
+      thatBox->setText(QDateTime::fromString(thatBox->text(), "MM/dd/yyyy - hh:mm").toString("MM/dd/yyyy - hh:mm AP"));
     } else {
-      QDateTime time = QDateTime::fromString(textToConvert, "MM/dd/yyyy - hh:mm AP");
-      thatBox->setText(time.toString("MM/dd/yyyy - hh:mm"));
+      thatBox->setText(QDateTime::fromString(thatBox->text(), "MM/dd/yyyy - hh:mm AP").toString("MM/dd/yyyy - hh:mm"));
     }
   }
   currentToggleNew = !currentToggleNew;
@@ -287,29 +286,29 @@ void MainWindow::on_btnAddAttendanceBack_clicked() {
 void MainWindow::on_btnAddAttendanceSave_clicked() {
   QVector<QString> timeSlots;
   QVector<QString> tasks;
-  QWidget *list = ui->scrollArea_2->widget();
-  QObjectList newList = list->children();
-  newList.removeFirst(); // Removes the Grid from the list.
-  foreach (QObject *box, newList) {
-    QCheckBox *thatBox = qobject_cast<QCheckBox *>(box);
-    if (thatBox->isChecked()) {
-      QString time = thatBox->text();
+  QObjectList list = ui->scrollArea_2->widget()->children();
+  list.removeFirst(); // Removes the Grid from the list.
+  for (auto item : list) {
+    QCheckBox *box = qobject_cast<QCheckBox *>(item);
+    if (box->isChecked()) {
+      QString time = box->text();
+      if (currentToggleAdd) {
+        time = QDateTime::fromString(time, "MM/dd/yyyy - hh:mm AP").toString("MM/dd/yyyy - hh:mm");
+      }
       timeSlots.append(time);
     }
   }
-  QWidget *list2 = ui->scrollArea_4->widget();
-  QObjectList newList2 = list2->children();
-  newList2.removeFirst(); // Removes the Grid from the list.
-  foreach (QObject *box, newList2) {
-    QCheckBox *thatBox = qobject_cast<QCheckBox *>(box);
-    if (thatBox->isChecked()) {
-      QString task = thatBox->text();
-      tasks.append(task);
+  QObjectList list2 = ui->scrollArea_4->widget()->children();
+  list2.removeFirst(); // Removes the Grid from the list.
+  for (auto item : list2) {
+    QCheckBox *box = qobject_cast<QCheckBox *>(item);
+    if (box->isChecked()) {
+      tasks.append(box->text());
     }
   }
   Attendee attendee(ui->txtName->text(), timeSlots, tasks);
   Event CurrentEventE;
-  foreach (Event e, eventList) {
+  for (auto e : eventList) {
     if (e.getName().trimmed() == currentEvent.trimmed()) {
       CurrentEventE = e;
       break;
@@ -357,92 +356,27 @@ void MainWindow::on_lstListEvents_itemClicked(QListWidgetItem *item) {
 }
 
 void MainWindow::on_btnViewAttendanceToggle_clicked() {
-  if (ui->tableTimeSlots->rowCount() != 1) {
-    for (int i = 1; i < ui->tableTimeSlots->rowCount(); i++) {
-      QTableWidgetItem *item = ui->tableTimeSlots->item(i, 1);
-      QList<QString> itemS = item->text().split(",");
-      QString newTime;
-      foreach (QString time, itemS) {
-        if (!currentToggleView) {
-          QDateTime Dtime;
-          Dtime.setTime(QTime::fromString(time));
-          newTime.append(Dtime.time().toString("hh:mm:ss AP"));
-          newTime.append(",");
-        } else {
-          if (time.contains("AM")) {
-            if (time.startsWith("12")) {
-              time = "00" + time.left(8).remove(0, 2);
-            } else {
-              time = time.left(8);
-            }
-          } else if (time.contains("PM")) {
-            if (time.left(2) != QString::number(12)) {
-              time = QString::number(time.left(2).toInt() + 12) + time.left(8).remove(0, 2);
-            } else {
-              time = time.left(8);
-            }
-          }
-
-          newTime.append(time);
-          newTime.append(",");
-        }
-      }
-      newTime.chop(1);
-      QTableWidgetItem *newTim = new QTableWidgetItem(newTime);
-      ui->tableTimeSlots->setItem(i, 1, newTim);
+  for (int i = 1; i < ui->tableTimeSlots->columnCount(); i++) {
+    QTableWidgetItem *item = ui->tableTimeSlots->item(0, i);
+    QString time = item->text();
+    if (!currentToggleView) {
+      item->setText(QDateTime::fromString(time, "MM/dd/yyyy\nhh:mm").toString("MM/dd/yyyy\nhh:mm AP"));
+    } else {
+      item->setText(QDateTime::fromString(time, "MM/dd/yyyy\nhh:mm AP").toString("MM/dd/yyyy\nhh:mm"));
     }
-    currentToggleView = !currentToggleView;
   }
+  currentToggleView = !currentToggleView;
 }
 
 void MainWindow::on_btnAddAttendanceToggle_clicked() {
-  QWidget *list = ui->scrollArea_2->widget();
-  QObjectList newList = list->children();
-  newList.removeFirst();
-  float timeCounter = 0;
-  foreach (QObject *box, newList) {
-    QCheckBox *thatBox = qobject_cast<QCheckBox *>(box);
+  QObjectList list = ui->scrollArea_2->widget()->children();
+  list.removeFirst();
+  for (auto box : list) {
+    QCheckBox *item = qobject_cast<QCheckBox *>(box);
     if (!currentToggleAdd) {
-      QString textToConvert = thatBox->text();
-      /*Extremely odd behavior where I imagine float to String converstion
-       * produces odd & character. These were the locations that they appeared
-       * in the string, so they are fixed accordingly.
-       */
-      if (textToConvert.contains("&")) {
-        if (textToConvert.indexOf("&") == 3) {
-          textToConvert.replace("&", "");
-        }
-        if (textToConvert.indexOf("&") == 1) {
-          textToConvert.replace("&", "");
-        }
-        if (textToConvert.indexOf("&") == 0) {
-          textToConvert.replace("&", "");
-        }
-      }
-      QDateTime time;
-      time.setTime(QTime::fromString(textToConvert));
-      thatBox->setText(time.time().toString("hh:mm:ss AP"));
+      item->setText(QDateTime::fromString(item->text(), "MM/dd/yyyy - hh:mm").toString("MM/dd/yyyy - hh:mm AP"));
     } else {
-      QString timeCounterS = QString::number(timeCounter);
-      if (timeCounterS.contains(".5")) {
-        QString sTime = QString::number((int)timeCounter) + ":30";
-        if (timeCounter < 3) {
-          sTime.prepend("0");
-        }
-        QDateTime time;
-        time.setTime(QDateTime::fromString(sTime, "hh:mm").time());
-
-        thatBox->setText(time.time().toString());
-      } else {
-        QString sTime = QString::number((int)timeCounter) + ":00";
-        if (timeCounter < 3) {
-          sTime.prepend("0");
-        }
-        QDateTime time;
-        time.setTime(QDateTime::fromString(sTime, "hh:mm").time());
-        thatBox->setText(time.time().toString());
-      }
-      timeCounter += 0.5;
+      item->setText(QDateTime::fromString(item->text(), "MM/dd/yyyy - hh:mm AP").toString("MM/dd/yyyy - hh:mm"));
     }
   }
   currentToggleAdd = !currentToggleAdd;
