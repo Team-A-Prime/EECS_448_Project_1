@@ -8,6 +8,7 @@
 #include <QListWidgetItem>
 #include <QMainWindow>
 #include <QMessageBox>
+#include <QVector>
 
 namespace Ui {
 class MainWindow;
