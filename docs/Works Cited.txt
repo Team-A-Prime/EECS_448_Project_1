@@ -1,3 +1,5 @@
 The writing of this program was made possible by the Qt Group Plc.
 To download the full source, a link can be found to their download page here: https://www1.qt.io/download-open-source/
 Date of Access: September 6th, 2017, and September 16th, 2017.
+
+The writing of this program was also made possible by team Let Us C, who wrote the code necessary to fulfill most of the requirements of project 1
