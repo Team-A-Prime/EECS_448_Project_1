@@ -8,7 +8,7 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = EECS448Project2
+TARGET = Project2
 TEMPLATE = app
 CONFIG -= app_bundle
 
