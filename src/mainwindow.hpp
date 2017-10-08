@@ -198,15 +198,6 @@ private slots:
   void on_btnAddAttendanceSave_clicked();
 
   /*!
-   * \brief on_btnViewAttendanceBack_clicked
-   *
-   * Pre: None
-   *
-   * Post: The user will return back to pageListAttendance
-   */
-  void on_btnViewAttendanceBack_clicked();
-
-  /*!
    * \brief on_btnViewAttendanceReturn_clicked
    *
    * Pre: None

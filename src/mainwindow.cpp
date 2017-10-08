@@ -216,9 +216,11 @@ void MainWindow::on_btnListAttendanceNext_clicked() {
     ui->tableTimeSlots->insertColumn(0);
 
     // Populate the time slot column heads
-    for (int i = 0; i < currentEventE.getSlots().size(); i++) {
+    auto timeSlots = currentEventE.getSlots();
+    auto timeSlotsDisp = currentEventE.getSlots();
+    for (int i = 0; i < timeSlots.size(); i++) {
       ui->tableTimeSlots->insertColumn(i+1);
-      QTableWidgetItem *labelASlots = new QTableWidgetItem(currentEventE.getSlots()[i].replace(" - ", "\n"));
+      QTableWidgetItem *labelASlots = new QTableWidgetItem(timeSlotsDisp[i].replace(" - ", "\n"));
       ui->tableTimeSlots->setItem(0, i+1, labelASlots);
     }
 
@@ -228,12 +230,22 @@ void MainWindow::on_btnListAttendanceNext_clicked() {
       ui->tableTimeSlots->insertRow(i+1);
       QTableWidgetItem *labelAName = new QTableWidgetItem(attendees[i].getName());
       ui->tableTimeSlots->setItem(i+1, 0, labelAName);
-      auto eslots = currentEventE.getSlots();
-      for (int j = 0; j < eslots.size(); j++) {
+      for (int j = 0; j < timeSlots.size(); j++) {
         QTableWidgetItem *labelASlots = new QTableWidgetItem();
-        labelASlots->setBackground((attendees[i].getSlots().contains(eslots[j])) ? Qt::green : Qt::red);
+        labelASlots->setBackground((attendees[i].getSlots().contains(timeSlots[j])) ? Qt::green : Qt::red);
         ui->tableTimeSlots->setItem(i+1, j+1, labelASlots);
       }
+    }
+
+    // Create the total attendees per time slot row
+    ui->tableTimeSlots->insertRow(attendees.size()+1);
+    for (int i = 0; i < timeSlots.size(); i++) {
+      int total = 0;
+      for (auto attendee : attendees) {
+        total += (attendee.getSlots().contains(timeSlots[i])) ? 1 : 0;
+      }
+      QTableWidgetItem *totalSlots = new QTableWidgetItem(QString::number(total));
+      ui->tableTimeSlots->setItem(attendees.size()+1, i+1, totalSlots);
     }
 
     // Initialize the task table
@@ -309,10 +321,6 @@ void MainWindow::on_btnAddAttendanceSave_clicked() {
   ui->stackedWidget->setCurrentWidget(ui->pageReturn);
 }
 
-void MainWindow::on_btnViewAttendanceBack_clicked() {
-  QCoreApplication::exit(RESTART);
-}
-
 void MainWindow::on_btnViewAttendanceReturn_clicked() {
   QCoreApplication::exit(RESTART);
 }
@@ -321,7 +329,7 @@ void MainWindow::on_btnViewAttendanceQuit_clicked() {
   QCoreApplication::exit(NORMAL);
 }
 
-void MainWindow::on_txtName_textChanged(/*const QString &arg1*/) {
+void MainWindow::on_txtName_textChanged() {
   if (ui->txtName->text() != "") {
     ui->btnNew->setEnabled(true);
     ui->btnSelecExist->setEnabled(true);
@@ -339,7 +347,7 @@ void MainWindow::on_rdView_clicked() {
   ui->btnListAttendanceNext->setEnabled(true);
 }
 
-void MainWindow::on_eventName_textChanged(/*const QString &arg1*/) {
+void MainWindow::on_eventName_textChanged() {
   ui->btnNewDateNext->setEnabled(ui->eventName->text() != "" && dates.length() > 0);
 }
 
@@ -355,17 +363,6 @@ void MainWindow::on_btnViewAttendanceToggle_clicked() {
       QList<QString> itemS = item->text().split(",");
       QString newTime;
       foreach (QString time, itemS) {
-        if (time.contains("&")) {
-          if (time.indexOf("&") == 3) {
-            time.replace("&", "");
-          }
-          if (time.indexOf("&") == 1) {
-            time.replace("&", "");
-          }
-          if (time.indexOf("&") == 0) {
-            time.replace("&", "");
-          }
-        }
         if (!currentToggleView) {
           QDateTime Dtime;
           Dtime.setTime(QTime::fromString(time));
