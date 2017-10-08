@@ -247,6 +247,14 @@ void MainWindow::on_btnListAttendanceNext_clicked() {
     ui->tableTasks->setItem(0, 0, labelATasks);
     ui->tableTasks->setItem(0, 1, labelTTasks);
 
+    // Set Row Count for the amount of tasks, and read everything into the table.
+    ui->tableTasks->setRowCount(currentEventE.getTasks().count() + 1);
+    ui->tableTasks->setCurrentCell(1, 0);
+    foreach (QString task, currentEventE.getTasks()) {
+      QTableWidgetItem *newTask = new QTableWidgetItem(task);
+      ui->tableTasks->setItem(ui->tableTasks->currentRow(), 0, newTask);
+      ui->tableTasks->setCurrentCell(ui->tableTasks->currentRow() + 1, 0);
+    }
 
     ui->stackedWidget->setCurrentWidget(ui->pageViewAttendance);
   }
