@@ -33,10 +33,10 @@ SOURCES += \
 
 
 HEADERS += \
-        src/mainwindow.h\
-        src/event.h \
-    src/readwrite.h \
-    src/attendee.h
+        src/mainwindow.hpp\
+        src/event.hpp \
+    src/readwrite.hpp \
+    src/attendee.hpp
 
 FORMS += \
         src/mainwindow.ui

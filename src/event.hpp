@@ -1,6 +1,6 @@
 #pragma once
 
-#include "attendee.h"
+#include "attendee.hpp"
 #include <QString>
 #include <QVector>
 

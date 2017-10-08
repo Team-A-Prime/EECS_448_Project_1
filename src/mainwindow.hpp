@@ -1,6 +1,9 @@
 #pragma once
 
-#include "event.h"
+#include "attendee.hpp"
+#include "event.hpp"
+#include "readwrite.hpp"
+#include "ui_mainwindow.h"
 #include <QCheckBox>
 #include <QListWidgetItem>
 #include <QMainWindow>

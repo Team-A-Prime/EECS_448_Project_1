@@ -1,5 +1,5 @@
-#include "readwrite.h"
-#include "event.h"
+#include "readwrite.hpp"
+#include "event.hpp"
 #include <QFile>
 #include <QMessageBox> //for debug
 #include <QTextStream>
