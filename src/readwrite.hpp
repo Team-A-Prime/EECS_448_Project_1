@@ -1,7 +1,10 @@
 #pragma once
 
 #include "event.hpp"
+#include <QFile>
+#include <QMessageBox> //for debug
 #include <QString>
+#include <QTextStream>
 
 class ReadWrite {
 public:
