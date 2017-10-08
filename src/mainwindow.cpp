@@ -241,6 +241,7 @@ void MainWindow::on_btnListAttendanceNext_clicked() {
 
     // Create the total attendees per time slot row
     ui->tableTimeSlots->insertRow(attendees.size()+1);
+    ui->tableTimeSlots->setItem(attendees.size()+1, 0, new QTableWidgetItem("Total"));
     for (int i = 0; i < timeSlots.size(); i++) {
       int total = 0;
       for (auto attendee : attendees) {
