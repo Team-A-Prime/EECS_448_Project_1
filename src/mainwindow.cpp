@@ -86,6 +86,23 @@ void MainWindow::on_btnNewTimeSave_clicked() {
   ui->stackedWidget->setCurrentWidget(ui->pageReturn);
 }
 
+void MainWindow::on_btnCopyTimes_clicked() {
+  auto boxes = ui->scrollArea->widget()->findChildren<QCheckBox *>();
+
+  // Get the times to copy
+  bool timesToCopy[48];
+  for (int i = 0; i < 48; ++i) {
+    if (i < boxes.size()) {
+      timesToCopy[i] = boxes.at(i)->isChecked();
+    }
+  }
+
+  // Copy the times to the rest of the days
+  for (int i = 0; i < boxes.size(); ++i) {
+    boxes.at(i)->setChecked(timesToCopy[i % 48]);
+  }
+}
+
 void MainWindow::on_btnNewTimeAddTasks_clicked() {
   ui->stackedWidget->setCurrentWidget(ui->pageNewTasks);
   ui->gridLayout_20->setAlignment(Qt::AlignTop);

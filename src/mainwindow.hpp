@@ -103,6 +103,15 @@ private slots:
   void on_btnNewTimeSave_clicked();
 
   /*!
+   * \brief on_btnCopyTimes_clicked
+   *
+   * Pre: None
+   *
+   * Post: The times from the first day will be copied to the rest of the days.
+   */
+  void on_btnCopyTimes_clicked();
+
+  /*!
    * \brief on_btnNewTimeAddTasks_clicked
    *
    * Pre: None

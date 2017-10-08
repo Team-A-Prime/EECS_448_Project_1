@@ -357,8 +357,8 @@
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>98</width>
-               <height>28</height>
+               <width>1053</width>
+               <height>564</height>
               </rect>
              </property>
              <layout class="QGridLayout" name="gridLayout_17"/>
@@ -386,6 +386,13 @@
             </property>
             <property name="alignment">
              <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QPushButton" name="btnCopyTimes">
+            <property name="text">
+             <string>Copy times from first day</string>
             </property>
            </widget>
           </item>
@@ -423,8 +430,8 @@
              <rect>
               <x>0</x>
               <y>0</y>
-              <width>98</width>
-              <height>28</height>
+              <width>1024</width>
+              <height>604</height>
              </rect>
             </property>
             <property name="sizePolicy">
@@ -637,8 +644,8 @@
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>98</width>
-               <height>28</height>
+               <width>43</width>
+               <height>18</height>
               </rect>
              </property>
              <layout class="QGridLayout" name="gridLayout_18"/>
@@ -679,8 +686,8 @@
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>98</width>
-               <height>28</height>
+               <width>18</width>
+               <height>18</height>
               </rect>
              </property>
              <layout class="QGridLayout" name="gridLayout_21"/>
