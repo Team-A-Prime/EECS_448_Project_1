@@ -18,6 +18,13 @@ class MainWindow : public QMainWindow {
   Q_OBJECT
 
 public:
+  /*!
+    \brief MainWindow - Constructor
+    *
+    * Pre: None
+    *
+    * Post: The MainWindow is created
+    */
   explicit MainWindow(QWidget *parent = 0);
   /*!
     \brief MainWindow - Deconstructor
@@ -225,6 +232,14 @@ private slots:
    */
   void on_txtName_textChanged();
 
+  /*!
+   * \brief on_eventName_textChanged
+   *
+   * Pre: None
+   *
+   * Post: So long as the line edit is not empty, the buttons will become
+   * enabled.
+   */
   void on_eventName_textChanged();
 
   /*!
@@ -277,7 +292,7 @@ private slots:
   void on_btnAddAttendanceToggle_clicked();
 
 private:
-  QVector<Event> eventList;
+  QVector<Event> eventList; /*!< The list of all events */
   Ui::MainWindow *ui;    /*!< The "Main Window" object where all of the widgets reside.*/
   bool currentToggleNew; /*!< Keeps track of whether or not the toggle button on
                             the pageNewTime is currently in the UTC or the AM/PM

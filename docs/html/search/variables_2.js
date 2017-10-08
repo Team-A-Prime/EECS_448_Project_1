@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['date',['date',['../classEvent.html#a069891248fff956a9a2f473503b97255',1,'Event']]]
+  ['dates',['dates',['../classEvent.html#a033ad4aac8a3ef4794f497e006d86ae6',1,'Event']]]
 ];

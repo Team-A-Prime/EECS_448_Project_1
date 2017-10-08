@@ -19,9 +19,10 @@ public:
   /*!
    * \brief Event - Constructor
    * \param name
-   * \param date
+   * \param dates
    * \param creator
    * \param timeSlots
+   * \param tasks
    *\details
    * Pre: None
    *

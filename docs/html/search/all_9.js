@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['read',['read',['../classReadWrite.html#a278be62869e4b04a3fe6b7fdbeb73423',1,'ReadWrite']]],
-  ['readwrite',['ReadWrite',['../classReadWrite.html',1,'ReadWrite'],['../classReadWrite.html#a11c22591e481ff4fc111e485ab2955c2',1,'ReadWrite::ReadWrite()']]],
-  ['removeslot',['removeSlot',['../classEvent.html#a75f2a6c978f172cdbce215bf1197cd23',1,'Event']]]
+  ['tasks',['tasks',['../classAttendee.html#acf48b6b17cc1840c2cd8ed21b105d532',1,'Attendee::tasks()'],['../classEvent.html#afa478f65ca77a42da6f9ccd182af79d1',1,'Event::tasks()']]],
+  ['timeslots',['timeSlots',['../classAttendee.html#aafd4a271150ad2792e483a5e045f4217',1,'Attendee::timeSlots()'],['../classEvent.html#a2654403aa957679f397abb9796d20b2e',1,'Event::timeSlots()']]]
 ];
