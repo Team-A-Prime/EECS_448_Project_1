@@ -2,7 +2,7 @@
 
 enum EXIT_CODES {
   NORMAL = 0,
-  RESTART = 1000
+  RESTART = 250
 };
 
 QVector<QString> dates;

@@ -3,11 +3,11 @@
 
 // you found my secret comment.
 
-#define RESTART_CODE 1000
+#define RESTART_CODE 250
 
 int main(int argc, char *argv[]) {
 
-  int return_code = 1000;
+  int return_code = 250;
   while (return_code == RESTART_CODE) {
     QApplication a(argc, argv);
     MainWindow w;
