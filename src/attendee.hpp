@@ -2,6 +2,7 @@
 
 #include <QObject>
 #include <QVector>
+
 class Attendee {
 public:
   /*!

@@ -1,8 +1,4 @@
 #include "readwrite.hpp"
-#include "event.hpp"
-#include <QFile>
-#include <QMessageBox> //for debug
-#include <QTextStream>
 
 ReadWrite::ReadWrite() {
   // empty constructor
