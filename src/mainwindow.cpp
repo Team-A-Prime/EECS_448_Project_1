@@ -8,11 +8,9 @@ enum EXIT_CODES {
 QVector<QString> dates;
 
 MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent), ui(new Ui::MainWindow), currentToggleNew(false), currentToggleAdd(false),
-      currentToggleView(false) {
+    : QMainWindow(parent), ui(new Ui::MainWindow), currentToggleNew(false), currentToggleAdd(false), currentToggleView(false) {
   ui->setupUi(this);
   ReadWrite::read(eventList);
-  ui->calendarWidget->setMinimumDate(QDate::currentDate());
 }
 
 MainWindow::~MainWindow() {
@@ -21,12 +19,15 @@ MainWindow::~MainWindow() {
 }
 
 void MainWindow::on_btnNew_clicked() {
+  ui->calendarWidget->setMinimumDate(QDate::currentDate());
   ui->stackedWidget->setCurrentWidget(ui->pageNewDate);
 }
 
 void MainWindow::on_btnSelecExist_clicked() {
   ui->lstListEvents->clear();
-  foreach (Event e, eventList) { ui->lstListEvents->addItem(e.getName()); }
+  for (auto e : eventList) {
+    ui->lstListEvents->addItem(e.getName());
+  }
   ui->stackedWidget->setCurrentWidget(ui->pageListAttendance);
 }
 
@@ -49,12 +50,14 @@ void MainWindow::on_btnNewDateNext_clicked() {
   }
   ui->stackedWidget->setCurrentWidget(ui->pageNewTime);
 }
+
 void MainWindow::on_btnNewDateAdd_clicked() {
   if (!dates.contains(ui->calendarWidget->selectedDate().toString("MM/dd/yyyy"))) {
     dates.append(ui->calendarWidget->selectedDate().toString("MM/dd/yyyy"));
   }
   ui->btnNewDateNext->setEnabled(ui->eventName->text() != "");
 }
+
 void MainWindow::on_btnNewTimeBack_clicked() {
   QCoreApplication::exit(RESTART);
 }
@@ -89,15 +92,14 @@ void MainWindow::on_btnNewTimeAddTasks_clicked() {
 }
 
 void MainWindow::on_btnNewTimeToggle_clicked() {
-  QWidget *list = ui->scrollArea->widget();
-  QObjectList newList = list->children();
-  newList.removeFirst();
-  foreach (QObject *box, newList) {
-    QCheckBox *thatBox = qobject_cast<QCheckBox *>(box);
+  QObjectList list = ui->scrollArea->widget()->children();
+  list.removeFirst();
+  for (auto item : list) {
+    QCheckBox *box = qobject_cast<QCheckBox *>(item);
     if (!currentToggleNew) {
-      thatBox->setText(QDateTime::fromString(thatBox->text(), "MM/dd/yyyy - hh:mm").toString("MM/dd/yyyy - h:mm AP"));
+      box->setText(QDateTime::fromString(box->text(), "MM/dd/yyyy - hh:mm").toString("MM/dd/yyyy - h:mm AP"));
     } else {
-      thatBox->setText(QDateTime::fromString(thatBox->text(), "MM/dd/yyyy - h:mm AP").toString("MM/dd/yyyy - hh:mm"));
+      box->setText(QDateTime::fromString(box->text(), "MM/dd/yyyy - h:mm AP").toString("MM/dd/yyyy - hh:mm"));
     }
   }
   currentToggleNew = !currentToggleNew;
@@ -118,22 +120,23 @@ void MainWindow::on_btnNewTaskDone_clicked() {
   QVector<QString> timeSlots;
   QVector<QString> tasks;
   QVector<QString> creatorTasks;
-  QWidget *list = ui->scrollArea->widget();
-  QObjectList newList = list->children();
-  newList.removeFirst(); // Removes the Grid from the list.
-  foreach (QObject *box, newList) {
-    QCheckBox *thatBox = qobject_cast<QCheckBox *>(box);
-    if (thatBox->isChecked()) {
-      QString time = thatBox->text();
+  QObjectList slotList = ui->scrollArea->widget()->children();
+  slotList.removeFirst(); // Removes the Grid from the list.
+  for (auto item : slotList) {
+    QCheckBox *box = qobject_cast<QCheckBox *>(item);
+    if (box->isChecked()) {
+      QString time = box->text();
+      if (currentToggleNew) {
+        time = QDateTime::fromString(time, "MM/dd/yyyy - h:mm AP").toString("MM/dd/yyyy - hh:mm");
+      }
       timeSlots.append(time);
     }
   }
-  QWidget *list2 = ui->scrollArea_3->widget();
-  QObjectList newList2 = list2->children();
-  newList2.removeFirst(); // Removes the Grid from the list.
-  foreach (QObject *label, newList2) {
-    QLabel *thatLabel = qobject_cast<QLabel *>(label);
-    tasks.append(thatLabel->text());
+  QObjectList taskList = ui->scrollArea_3->widget()->children();
+  taskList.removeFirst(); // Removes the Grid from the list.
+  for (auto item : taskList) {
+    QLabel *label = qobject_cast<QLabel *>(item);
+    tasks.append(label->text());
   }
   Event event(ui->eventName->text(), dates, ui->txtName->text(), timeSlots, tasks);
   Attendee creator(ui->txtName->text(), timeSlots, creatorTasks);
@@ -219,7 +222,7 @@ void MainWindow::on_btnListAttendanceNext_clicked() {
     auto timeSlotsDisp = currentEventE.getSlots();
     for (int i = 0; i < timeSlots.size(); i++) {
       ui->tableTimeSlots->insertColumn(i+1);
-      QTableWidgetItem *labelASlots = new QTableWidgetItem(timeSlotsDisp[i].replace(" - ", "\n"));
+      auto labelASlots = new QTableWidgetItem(timeSlotsDisp[i].replace(" - ", "\n"));
       ui->tableTimeSlots->setItem(0, i+1, labelASlots);
     }
 
@@ -227,12 +230,12 @@ void MainWindow::on_btnListAttendanceNext_clicked() {
     auto attendees = currentEventE.getAttendees();
     for (int i = 0; i < attendees.size(); i++) {
       ui->tableTimeSlots->insertRow(i+1);
-      QTableWidgetItem *labelAName = new QTableWidgetItem(attendees[i].getName());
-      ui->tableTimeSlots->setItem(i+1, 0, labelAName);
+      auto attNameLabel = new QTableWidgetItem(attendees[i].getName());
+      ui->tableTimeSlots->setItem(i+1, 0, attNameLabel);
       for (int j = 0; j < timeSlots.size(); j++) {
-        QTableWidgetItem *labelASlots = new QTableWidgetItem();
-        labelASlots->setBackground((attendees[i].getSlots().contains(timeSlots[j])) ? Qt::green : Qt::red);
-        ui->tableTimeSlots->setItem(i+1, j+1, labelASlots);
+        auto attSlotLabel = new QTableWidgetItem();
+        attSlotLabel->setBackground((attendees[i].getSlots().contains(timeSlots[j])) ? Qt::green : Qt::red);
+        ui->tableTimeSlots->setItem(i+1, j+1, attSlotLabel);
       }
     }
 
@@ -243,7 +246,7 @@ void MainWindow::on_btnListAttendanceNext_clicked() {
       for (auto attendee : attendees) {
         total += (attendee.getSlots().contains(timeSlots[i])) ? 1 : 0;
       }
-      QTableWidgetItem *totalSlots = new QTableWidgetItem(QString::number(total));
+      auto totalSlots = new QTableWidgetItem(QString::number(total));
       ui->tableTimeSlots->setItem(attendees.size()+1, i+1, totalSlots);
     }
 
@@ -251,16 +254,14 @@ void MainWindow::on_btnListAttendanceNext_clicked() {
     ui->tableTasks->insertRow(0);
     ui->tableTasks->insertColumn(0);
     ui->tableTasks->insertColumn(1);
-    QTableWidgetItem *labelATasks = new QTableWidgetItem("Task name");
-    QTableWidgetItem *labelTTasks = new QTableWidgetItem("Task assignee");
-    ui->tableTasks->setItem(0, 0, labelATasks);
-    ui->tableTasks->setItem(0, 1, labelTTasks);
+    ui->tableTasks->setItem(0, 0, new QTableWidgetItem("Task name"));
+    ui->tableTasks->setItem(0, 1, new QTableWidgetItem("Task assignee"));
 
     // Set Row Count for the amount of tasks, and read everything into the table.
     ui->tableTasks->setRowCount(currentEventE.getTasks().count() + 1);
     ui->tableTasks->setCurrentCell(1, 0);
-    foreach (QString task, currentEventE.getTasks()) {
-      QTableWidgetItem *newTask = new QTableWidgetItem(task);
+    for (auto task : currentEventE.getTasks()) {
+      auto newTask = new QTableWidgetItem(task);
       ui->tableTasks->setItem(ui->tableTasks->currentRow(), 0, newTask);
       QString taskAssignee = "";
       for (auto attendee : currentEventE.getAttendees()) {
@@ -269,7 +270,7 @@ void MainWindow::on_btnListAttendanceNext_clicked() {
           break;
         }
       }
-      QTableWidgetItem *newTaskAssign = new QTableWidgetItem(taskAssignee);
+      auto newTaskAssign = new QTableWidgetItem(taskAssignee);
       ui->tableTasks->setItem(ui->tableTasks->currentRow(), 1, newTaskAssign);
 
       ui->tableTasks->setCurrentCell(ui->tableTasks->currentRow() + 1, 0);
