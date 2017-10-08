@@ -1,8 +1,4 @@
-#include "mainwindow.h"
-#include "attendee.h"
-#include "readwrite.h"
-#include "ui_mainwindow.h"
-#include <QMessageBox>
+#include "mainwindow.hpp"
 
 enum EXIT_CODES {
   NORMAL = 0,

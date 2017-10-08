@@ -1,4 +1,4 @@
-#include "attendee.h"
+#include "attendee.hpp"
 
 Attendee::Attendee() {
 }
