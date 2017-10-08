@@ -4,6 +4,11 @@
 #include "ui_mainwindow.h"
 #include <QMessageBox>
 
+enum EXIT_CODES {
+  NORMAL = 0,
+  RESTART = 1000
+};
+
 QVector<QString> dates;
 
 MainWindow::MainWindow(QWidget *parent)
@@ -29,7 +34,7 @@ void MainWindow::on_btnSelecExist_clicked() {
 }
 
 void MainWindow::on_btnNewDateBack_clicked() {
-  ui->stackedWidget->setCurrentWidget(ui->pageStart);
+  QCoreApplication::exit(RESTART);
 }
 
 void MainWindow::on_btnNewDateNext_clicked() {
@@ -54,7 +59,7 @@ void MainWindow::on_btnNewDateAdd_clicked() {
   ui->btnNewDateNext->setEnabled(ui->eventName->text() != "");
 }
 void MainWindow::on_btnNewTimeBack_clicked() {
-  ui->stackedWidget->setCurrentWidget(ui->pageNewDate);
+  QCoreApplication::exit(RESTART);
 }
 
 void MainWindow::on_btnNewTimeSave_clicked() {
@@ -143,15 +148,15 @@ void MainWindow::on_btnNewTaskDone_clicked() {
 }
 
 void MainWindow::on_btnExit_clicked() {
-  QCoreApplication::quit();
+  QCoreApplication::exit(NORMAL);
 }
 
 void MainWindow::on_btnReturnToStart_clicked() {
-  ui->stackedWidget->setCurrentWidget(ui->pageStart);
+  QCoreApplication::exit(RESTART);
 }
 
 void MainWindow::on_btnListAttendanceBack_clicked() {
-  ui->stackedWidget->setCurrentWidget(ui->pageStart);
+  QCoreApplication::exit(RESTART);
 }
 
 void MainWindow::on_btnListAttendanceNext_clicked() {
@@ -242,7 +247,7 @@ void MainWindow::on_btnListAttendanceNext_clicked() {
 }
 
 void MainWindow::on_btnAddAttendanceBack_clicked() {
-  ui->stackedWidget->setCurrentWidget(ui->pageListAttendance);
+  QCoreApplication::exit(RESTART);
 }
 
 void MainWindow::on_btnAddAttendanceSave_clicked() {
@@ -283,15 +288,15 @@ void MainWindow::on_btnAddAttendanceSave_clicked() {
 }
 
 void MainWindow::on_btnViewAttendanceBack_clicked() {
-  ui->stackedWidget->setCurrentWidget(ui->pageListAttendance);
+  QCoreApplication::exit(RESTART);
 }
 
 void MainWindow::on_btnViewAttendanceReturn_clicked() {
-  ui->stackedWidget->setCurrentWidget(ui->pageStart);
+  QCoreApplication::exit(RESTART);
 }
 
 void MainWindow::on_btnViewAttendanceQuit_clicked() {
-  QCoreApplication::quit();
+  QCoreApplication::exit(NORMAL);
 }
 
 void MainWindow::on_txtName_textChanged(/*const QString &arg1*/) {
