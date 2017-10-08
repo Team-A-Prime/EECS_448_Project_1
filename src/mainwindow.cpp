@@ -197,9 +197,9 @@ void MainWindow::on_btnListAttendanceNext_clicked() {
     ui->stackedWidget->setCurrentWidget(ui->pageAddAttendance);
   } else if (ui->rdView->isChecked()) {
     // Zero Out Table on Page Load.
-    ui->tableWidget->clear();
-    ui->tableWidget->setRowCount(0);
-    ui->tableWidget->setColumnCount(0);
+    ui->tableTimeSlots->clear();
+    ui->tableTimeSlots->setRowCount(0);
+    ui->tableTimeSlots->setColumnCount(0);
 
     // Finds event to be viewed from current event.
     Event currentEventE;
@@ -211,17 +211,17 @@ void MainWindow::on_btnListAttendanceNext_clicked() {
     }
 
     // Initialize header
-    ui->tableWidget->insertRow(0);
-    ui->tableWidget->insertColumn(0);
-    ui->tableWidget->insertColumn(1);
+    ui->tableTimeSlots->insertRow(0);
+    ui->tableTimeSlots->insertColumn(0);
+    ui->tableTimeSlots->insertColumn(1);
     QTableWidgetItem *labelA = new QTableWidgetItem("Attendees");
     QTableWidgetItem *labelT = new QTableWidgetItem("Times");
-    ui->tableWidget->setItem(0, 0, labelA);
-    ui->tableWidget->setItem(0, 1, labelT);
+    ui->tableTimeSlots->setItem(0, 0, labelA);
+    ui->tableTimeSlots->setItem(0, 1, labelT);
 
     // Set Row Count for the amount of attendees, and read everything into the table.
-    ui->tableWidget->setRowCount(currentEventE.getAttendees().count() + 1);
-    ui->tableWidget->setCurrentCell(1, 0);
+    ui->tableTimeSlots->setRowCount(currentEventE.getAttendees().count() + 1);
+    ui->tableTimeSlots->setCurrentCell(1, 0);
     foreach (Attendee a, currentEventE.getAttendees()) {
       QString allSlots;
       QTableWidgetItem *newAtt = new QTableWidgetItem(a.getName());
@@ -233,9 +233,9 @@ void MainWindow::on_btnListAttendanceNext_clicked() {
         }
       }
       QTableWidgetItem *newTim = new QTableWidgetItem(allSlots);
-      ui->tableWidget->setItem(ui->tableWidget->currentRow(), 0, newAtt);
-      ui->tableWidget->setItem(ui->tableWidget->currentRow(), 1, newTim);
-      ui->tableWidget->setCurrentCell(ui->tableWidget->currentRow() + 1, 0);
+      ui->tableTimeSlots->setItem(ui->tableTimeSlots->currentRow(), 0, newAtt);
+      ui->tableTimeSlots->setItem(ui->tableTimeSlots->currentRow(), 1, newTim);
+      ui->tableTimeSlots->setCurrentCell(ui->tableTimeSlots->currentRow() + 1, 0);
     }
 
     ui->stackedWidget->setCurrentWidget(ui->pageViewAttendance);
@@ -323,9 +323,9 @@ void MainWindow::on_lstListEvents_itemClicked(QListWidgetItem *item) {
 }
 
 void MainWindow::on_btnViewAttendanceToggle_clicked() {
-  if (ui->tableWidget->rowCount() != 1) {
-    for (int i = 1; i < ui->tableWidget->rowCount(); i++) {
-      QTableWidgetItem *item = ui->tableWidget->item(i, 1);
+  if (ui->tableTimeSlots->rowCount() != 1) {
+    for (int i = 1; i < ui->tableTimeSlots->rowCount(); i++) {
+      QTableWidgetItem *item = ui->tableTimeSlots->item(i, 1);
       QList<QString> itemS = item->text().split(",");
       QString newTime;
       foreach (QString time, itemS) {
@@ -366,7 +366,7 @@ void MainWindow::on_btnViewAttendanceToggle_clicked() {
       }
       newTime.chop(1);
       QTableWidgetItem *newTim = new QTableWidgetItem(newTime);
-      ui->tableWidget->setItem(i, 1, newTim);
+      ui->tableTimeSlots->setItem(i, 1, newTim);
     }
     currentToggleView = !currentToggleView;
   }
