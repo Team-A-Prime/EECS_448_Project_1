@@ -3,6 +3,7 @@ var searchData=
   ['on_5fbtnaddattendanceback_5fclicked',['on_btnAddAttendanceBack_clicked',['../classMainWindow.html#a953a3036215f56f8bb41bd3c8e17fc3d',1,'MainWindow']]],
   ['on_5fbtnaddattendancesave_5fclicked',['on_btnAddAttendanceSave_clicked',['../classMainWindow.html#ad542eebc9e83557f5b51f0c3b07a027f',1,'MainWindow']]],
   ['on_5fbtnaddattendancetoggle_5fclicked',['on_btnAddAttendanceToggle_clicked',['../classMainWindow.html#a1725cd88569cbbf79197905030773b8c',1,'MainWindow']]],
+  ['on_5fbtncopytimes_5fclicked',['on_btnCopyTimes_clicked',['../classMainWindow.html#a96a6eea3472de464892534879534db85',1,'MainWindow']]],
   ['on_5fbtnexit_5fclicked',['on_btnExit_clicked',['../classMainWindow.html#a21a296f80cd77f1d88818b8dfe513755',1,'MainWindow']]],
   ['on_5fbtnlistattendanceback_5fclicked',['on_btnListAttendanceBack_clicked',['../classMainWindow.html#aeb2c93422d5edea5a37cdd98a1a22912',1,'MainWindow']]],
   ['on_5fbtnlistattendancenext_5fclicked',['on_btnListAttendanceNext_clicked',['../classMainWindow.html#ace8c6a3ce24037e34ffa8f5323cf35aa',1,'MainWindow']]],
